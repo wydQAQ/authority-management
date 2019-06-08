@@ -1,15 +1,37 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
-
+import second from "./views/second.vue";
+import login from "./views/login";
+import userlist from "./components/userlist";
+import userguan from "./components/userguan";
+import userquan from "./components/userquan";
 Vue.use(Router);
 
 export default new Router({
   routes: [
     {
       path: "/",
-      name: "home",
-      component: Home
+      name: "login",
+      component: login
+    },
+    {
+      path: "/second",
+      name: "second",
+      component: second,
+      children: [
+        {
+          path: "/userlist",
+          component: userlist
+        },
+        {
+          path: "/userguan",
+          component: userguan
+        },
+        {
+          path: "/userquan",
+          component: userquan
+        }
+      ]
     },
     {
       path: "/about",

@@ -1,0 +1,131 @@
+<template>
+  <div class="userguanAdd">
+    <Drawer title="添加用户" v-model="openD" width="500" :mask-closable="false" :styles="styles">
+      <Form :model="formData">
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem label="用户名" label-position="top">
+              <Input v-model="formData.name" placeholder="请输入用户名"/>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem label="大学" label-position="top">
+              <Input v-model="formData.school" placeholder="请输入学校名称"/>
+            </FormItem>
+          </Col>
+          <Col span="12">
+            <FormItem label="选择身份" label-position="top">
+              <Select v-model="formData.isTeacher" placeholder="请选择身份">
+                <Option value="private">教师</Option>
+                <Option value="public">学生</Option>
+              </Select>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem label="邮箱" label-position="top">
+              <Input v-model="formData.mail" placeholder="请输入邮箱"/>
+            </FormItem>
+          </Col>
+          <Col span="12">
+            <FormItem label="电话" label-position="top">
+              <Input v-model="formData.phone" placeholder="请输入电话"/>
+            </FormItem>
+          </Col>
+        </Row>
+      </Form>
+      <div class="demo-drawer-footer">
+        <Button style="margin-right: 8px" @click="$emit('addCancle', false)">取消</Button>
+        <Button type="primary" @click="postU">添加</Button>
+      </div>
+    </Drawer>
+  </div>
+</template>
+
+<script>
+import eventbus from "../eventbus";
+import server from "../lib/server/index";
+import { mapState, mapMutations } from "vuex";
+export default {
+  name: "userguanAdd",
+  data() {
+    return {
+      styles: {
+        height: "calc(100% - 55px)",
+        overflow: "auto",
+        paddingBottom: "53px",
+        position: "static"
+      },
+      formData: {
+        name: "",
+        school: "",
+        isTeacher: "",
+        mail: "",
+        phone: ""
+      },
+      value3: false
+    };
+  },
+  props: ["openD"],
+  computed: {
+    ...mapState(["userlist"])
+  },
+  methods: {
+    ...mapMutations(["pushUser"]),
+    postU() {
+      this.$emit("addCancle", false);
+      let newisTeacher = "";
+      if (this.formData.isTeacher === "private") {
+        newisTeacher = this.formData.isTeacher = true;
+      } else {
+        newisTeacher = this.formData.isTeacher = false;
+      }
+      if (this.formData.name === "") {
+        this.$Notice.error({
+          title: "请输入正确的用户信息"
+        });
+        return;
+      } else {
+        server
+          .postUser({
+            id: this.userlist.length,
+            name: this.formData.name,
+            school: this.formData.school,
+            phone: this.formData.phone,
+            mail: this.formData.mail,
+            isTeacher: newisTeacher
+          })
+          .then(res => {
+            this.pushUser({
+              id: this.userlist.length,
+              name: this.formData.name,
+              school: this.formData.school,
+              phone: this.formData.phone,
+              mail: this.formData.mail,
+              isTeacher: newisTeacher
+            });
+            eventbus.$emit("getUser", true);
+            this.formData = [];
+          });
+      }
+    }
+  },
+  created() {}
+};
+</script>
+
+<style lang="scss" scoped>
+.demo-drawer-footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #e8e8e8;
+  padding: 10px 16px;
+  text-align: right;
+  background: #fff;
+}
+</style>
