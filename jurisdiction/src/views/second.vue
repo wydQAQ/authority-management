@@ -47,6 +47,7 @@ export default {
   },
   components: {},
   methods: {
+    //左侧列表点击局部加载
     closeSpin() {
       this.spinShow = true;
       setTimeout(() => {

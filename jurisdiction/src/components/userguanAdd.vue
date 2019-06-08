@@ -47,6 +47,7 @@
 
 <script>
 import eventbus from "../eventbus";
+//引入封装的请求
 import server from "../lib/server/index";
 import { mapState, mapMutations } from "vuex";
 export default {
@@ -75,9 +76,11 @@ export default {
   },
   methods: {
     ...mapMutations(["pushUser"]),
+    //添加用户操作
     postU() {
       this.$emit("addCancle", false);
       let newisTeacher = "";
+      //处理isTeacher属性
       if (this.formData.isTeacher === "private") {
         newisTeacher = this.formData.isTeacher = true;
       } else {

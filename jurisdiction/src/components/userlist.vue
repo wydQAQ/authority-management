@@ -2,7 +2,7 @@
   <div class="user">
     <div class="user-top">
       <Button @click="openDra" type="success">添加</Button>
-      <Button type="warning">编辑</Button>
+      <Button type="warning"  @click="changeData">编辑</Button>
       <Button @click="delUser" type="error">删除</Button>
       <div class="search">
         <Input v-model="searchVal" placeholder="请输入要查询的用户名" style="width: auto"/>
@@ -90,6 +90,11 @@ export default {
     UserAdd
   },
   methods: {
+    //编辑操作
+    changeData(){
+
+    },
+    //查询操作
     getSearch() {
       server
         .getsearchuser({
@@ -103,12 +108,14 @@ export default {
           this.nowData = newArr;
         });
     },
+    //关闭查询
     closeSearch() {
       this.searchVal = "";
       this.initData();
     },
-
+    //删除用户
     delUser() {
+      //批量删除
       if (this.delArray.length > 0) {
         for (let i = 0; i < this.delArray.length; i++) {
           server
@@ -121,6 +128,7 @@ export default {
             });
         }
       } else {
+        //选中删除
         server
           .deluserData({
             id: this.delRow.id
@@ -199,8 +207,10 @@ export default {
     ...mapState(["userlist"])
   },
   created() {
+    //初始化分页
     this.pageCurrent = 1;
     this.initData();
+    // 子组件发送添加请求 父组件重新初始化
     eventbus.$on("getUser", item => {
       if (item == true) {
         this.initData();
