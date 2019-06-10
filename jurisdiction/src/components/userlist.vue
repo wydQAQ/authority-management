@@ -2,8 +2,25 @@
   <div class="user">
     <div class="user-top">
       <Button @click="openDra" type="success">添加</Button>
+<<<<<<< HEAD
       <Button type="warning" @click="changeData">编辑</Button>
       <Button @click="delUser" type="error">删除</Button>
+=======
+      <Button type="warning" @click="openChangeDra">编辑</Button>
+      <Modal v-model="modal2" width="360">
+        <p slot="header" style="color:#f60;text-align:center">
+          <Icon type="information-circled"></Icon>
+          <span>删除确认</span>
+        </p>
+        <div style="text-align:center">
+          <p>是否继续删除？</p>
+        </div>
+        <div slot="footer">
+          <i-button type="error" size="large" long :loading="modal_loading" @click="delUser">删除</i-button>
+        </div>
+      </Modal>
+      <Button @click="del" type="error">删除</Button>
+>>>>>>> f3a689fc0c6d75823a65a7d4cbe833852c556c5b
       <div class="search">
         <Input
           v-model="searchVal"
@@ -20,7 +37,7 @@
       <div>
         <Table
           @on-select-all="delAll"
-          @on-select="getsome"
+          @on-select="getRow"
           border
           ref="selection"
           :columns="columns4"
@@ -39,7 +56,8 @@
       </div>
     </div>
     <div>
-      <UserAdd @addCancle="changeOpenD" :openD="openD"></UserAdd>
+      <UserAdd></UserAdd>
+      <UserChange></UserChange>
     </div>
   </div>
 </template>
@@ -49,6 +67,9 @@ import eventbus from "../eventbus";
 import server from "../lib/server/index";
 import { mapMutations, mapState } from "vuex";
 import UserAdd from "../components/userguanAdd";
+import UserChange from "../components/userchange";
+import "iview/dist/styles/iview.css";
+
 export default {
   name: "user",
   data() {
@@ -86,18 +107,23 @@ export default {
       dataCount: 10, //总条数
       pageCurrent: 1, //当前页
       nowData: [],
-      openD: false,
       delRow: "",
       delArray: [],
-      searchVal: ""
+      searchVal: "",
+      modal2: false,
+      modal_loading: false
     };
   },
   components: {
-    UserAdd
+    UserAdd,
+    UserChange
   },
   methods: {
+<<<<<<< HEAD
     //编辑操作
     changeData() {},
+=======
+>>>>>>> f3a689fc0c6d75823a65a7d4cbe833852c556c5b
     //查询操作
     getSearch() {
       server
@@ -117,20 +143,52 @@ export default {
       this.searchVal = "";
       this.initData();
     },
+    del() {
+      if (this.delRow == "" && this.delArray == "") {
+        return;
+      } else {
+        this.modal2 = true;
+      }
+    },
     //删除用户
     delUser() {
-      //批量删除
-      if (this.delArray.length > 0) {
-        for (let i = 0; i < this.delArray.length; i++) {
+      this.modal_loading = true;
+      setTimeout(() => {
+        this.modal_loading = false;
+        this.modal2 = false;
+        //批量删除
+        if (this.delArray.length > 0) {
+          for (let i = 0; i < this.delArray.length; i++) {
+            server
+              .deluserData({
+                id: this.delArray[i]
+              })
+              .then(res => {
+                this.initData();
+                this.delArray = [];
+              })
+              .catch(e => {
+                this.$Notice.error({
+                  title: "删除异常"
+                });
+              });
+          }
+        } else {
+          //选中删除
           server
             .deluserData({
-              id: this.delArray[i]
+              id: this.delRow.id
             })
             .then(() => {
               this.initData();
-              this.delArray = [];
+            })
+            .catch(e => {
+              this.$Notice.error({
+                title: "删除异常"
+              });
             });
         }
+<<<<<<< HEAD
       } else {
         //选中删除
         server
@@ -141,10 +199,15 @@ export default {
             this.initData();
           });
       }
+=======
+        this.$Message.success("删除成功");
+      }, 2000);
+>>>>>>> f3a689fc0c6d75823a65a7d4cbe833852c556c5b
     },
     //拿到当前选中的数据
     getRow(selection, row) {
       this.delRow = row;
+      eventbus.$emit("selectionData", row);
     },
     //拿到当前全部选中的数据
     delAll(selection) {
@@ -153,15 +216,12 @@ export default {
       }
     },
 
-    //批量选中
-    getsome(selection) {
-      for (let i = 0; i < selection.length; i++) {
-        this.delArray.push(selection[i].id);
-      }
-    },
-    changeOpenD(value) {
-      this.openD = value;
-    },
+    // //批量选中
+    // getsome(selection) {
+    //   for (let i = 0; i < selection.length; i++) {
+    //     this.delArray.push(selection[i].id);
+    //   }
+    // },
     changepage(index) {
       //需要显示开始数据的index,(因为数据是从0开始的，页码是从1开始的，需要-1)
       let _start = (index - 1) * this.pageSize;
@@ -182,10 +242,13 @@ export default {
     handleSelectAll(status) {
       this.$refs.selection.selectAll(status);
     },
+    //添加弹出
     openDra() {
-      if (this.openD == false) {
-        this.openD = true;
-      }
+      eventbus.$emit("shit", true);
+    },
+    //编辑弹出
+    openChangeDra() {
+      eventbus.$emit("shitPut", true);
     },
     initData() {
       server.getUsers().then(res => {
@@ -200,7 +263,6 @@ export default {
         }
         //数据存入vuex
         this.inituserMesg(userlist);
-
         //初始化分页
         this.dataCount = userlist.length;
         this.changepage(this.pageCurrent);
@@ -216,6 +278,12 @@ export default {
     this.initData();
     // 子组件发送添加请求 父组件重新初始化
     eventbus.$on("getUser", item => {
+      if (item == true) {
+        this.initData();
+      }
+    });
+
+    eventbus.$on("putUser", item => {
       if (item == true) {
         this.initData();
       }
