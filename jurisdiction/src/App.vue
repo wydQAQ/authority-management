@@ -10,10 +10,6 @@ body {
   overflow-y: hidden;
   background-color: #bbbfd3 !important;
 }
-
 </style>
 
-
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

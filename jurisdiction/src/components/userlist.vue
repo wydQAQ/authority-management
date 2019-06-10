@@ -2,11 +2,17 @@
   <div class="user">
     <div class="user-top">
       <Button @click="openDra" type="success">添加</Button>
-      <Button type="warning"  @click="changeData">编辑</Button>
+      <Button type="warning" @click="changeData">编辑</Button>
       <Button @click="delUser" type="error">删除</Button>
       <div class="search">
-        <Input v-model="searchVal" placeholder="请输入要查询的用户名" style="width: auto"/>
-        <Button @click="getSearch" type="primary" icon="ios-search">查询</Button>
+        <Input
+          v-model="searchVal"
+          placeholder="请输入要查询的用户名"
+          style="width: auto"
+        />
+        <Button @click="getSearch" type="primary" icon="ios-search"
+          >查询</Button
+        >
         <Button @click="closeSearch" type="warning">取消</Button>
       </div>
     </div>
@@ -91,9 +97,7 @@ export default {
   },
   methods: {
     //编辑操作
-    changeData(){
-
-    },
+    changeData() {},
     //查询操作
     getSearch() {
       server
@@ -122,7 +126,7 @@ export default {
             .deluserData({
               id: this.delArray[i]
             })
-            .then(res => {
+            .then(() => {
               this.initData();
               this.delArray = [];
             });
@@ -133,7 +137,7 @@ export default {
           .deluserData({
             id: this.delRow.id
           })
-          .then(res => {
+          .then(() => {
             this.initData();
           });
       }
@@ -247,7 +251,7 @@ export default {
   }
 }
 .search {
-  width: 326px;
+  width: 335px;
   height: 40px;
   margin-left: 830px;
   margin-top: -48px;
@@ -256,4 +260,3 @@ export default {
   }
 }
 </style>
-

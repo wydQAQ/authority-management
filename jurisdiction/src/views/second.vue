@@ -9,7 +9,7 @@
     </div>
     <div class="home-left">
       <div class="logo">
-        <img src="../assets/logo.jpg" alt>
+        <img src="../assets/logo.jpg" alt />
         <span>管理系统</span>
       </div>
       <div class="accodr">
@@ -30,19 +30,19 @@
       </div>
     </div>
     <div class="home-right">
-      <router-view/>
+      <router-view />
       <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
   </div>
 </template>
 
 <script>
-import { truncate } from "fs";
+// import { truncate } from "fs";
 export default {
   name: "home",
   data() {
     return {
-      spinShow: false,
+      spinShow: false
     };
   },
   components: {},
@@ -54,7 +54,7 @@ export default {
         this.spinShow = false;
       }, 1000);
     }
-  },
+  }
 };
 </script>
 

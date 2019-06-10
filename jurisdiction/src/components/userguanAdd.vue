@@ -1,18 +1,24 @@
 <template>
   <div class="userguanAdd">
-    <Drawer title="添加用户" v-model="openD" width="500" :mask-closable="false" :styles="styles">
+    <Drawer
+      title="添加用户"
+      v-model="openD"
+      width="500"
+      :mask-closable="false"
+      :styles="styles"
+    >
       <Form :model="formData">
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="用户名" label-position="top">
-              <Input v-model="formData.name" placeholder="请输入用户名"/>
+              <Input v-model="formData.name" placeholder="请输入用户名" />
             </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="大学" label-position="top">
-              <Input v-model="formData.school" placeholder="请输入学校名称"/>
+              <Input v-model="formData.school" placeholder="请输入学校名称" />
             </FormItem>
           </Col>
           <Col span="12">
@@ -27,18 +33,20 @@
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="邮箱" label-position="top">
-              <Input v-model="formData.mail" placeholder="请输入邮箱"/>
+              <Input v-model="formData.mail" placeholder="请输入邮箱" />
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem label="电话" label-position="top">
-              <Input v-model="formData.phone" placeholder="请输入电话"/>
+              <Input v-model="formData.phone" placeholder="请输入电话" />
             </FormItem>
           </Col>
         </Row>
       </Form>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="$emit('addCancle', false)">取消</Button>
+        <Button style="margin-right: 8px" @click="$emit('addCancle', false)"
+          >取消</Button
+        >
         <Button type="primary" @click="postU">添加</Button>
       </div>
     </Drawer>
