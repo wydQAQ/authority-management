@@ -15,5 +15,8 @@ export default {
   },
   getsearchuser(data) {
     return axios.get("/per/users?name_like=" + encodeURIComponent(data.name));
+  },
+  putUserData(data) {
+    return axios.put("/per/users/" + data.id, data);
   }
 };

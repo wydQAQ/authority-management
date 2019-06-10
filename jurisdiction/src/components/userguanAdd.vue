@@ -38,7 +38,7 @@
         </Row>
       </Form>
       <div class="demo-drawer-footer">
-        <Button style="margin-right: 8px" @click="$emit('addCancle', false)">取消</Button>
+        <Button style="margin-right: 8px" @click="closeOpen">取消</Button>
         <Button type="primary" @click="postU">添加</Button>
       </div>
     </Drawer>
@@ -67,10 +67,10 @@ export default {
         mail: "",
         phone: ""
       },
-      value3: false
+      openD: false
     };
   },
-  props: ["openD"],
+  // props: ["openD"],
   computed: {
     ...mapState(["userlist"])
   },
@@ -78,7 +78,7 @@ export default {
     ...mapMutations(["pushUser"]),
     //添加用户操作
     postU() {
-      this.$emit("addCancle", false);
+      this.openD = false;
       let newisTeacher = "";
       //处理isTeacher属性
       if (this.formData.isTeacher === "private") {
@@ -94,7 +94,7 @@ export default {
       } else {
         server
           .postUser({
-            id: this.userlist.length,
+            id: this.userlist.length + 1,
             name: this.formData.name,
             school: this.formData.school,
             phone: this.formData.phone,
@@ -102,21 +102,20 @@ export default {
             isTeacher: newisTeacher
           })
           .then(res => {
-            this.pushUser({
-              id: this.userlist.length,
-              name: this.formData.name,
-              school: this.formData.school,
-              phone: this.formData.phone,
-              mail: this.formData.mail,
-              isTeacher: newisTeacher
-            });
             eventbus.$emit("getUser", true);
             this.formData = [];
           });
       }
+    },
+    closeOpen() {
+      this.openD = false;
     }
   },
-  created() {}
+  created() {
+    eventbus.$on("shit", item => {
+      this.openD = item;
+    });
+  }
 };
 </script>
 

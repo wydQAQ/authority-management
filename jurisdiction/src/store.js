@@ -10,10 +10,10 @@ export default new Vuex.Store({
   mutations: {
     inituserMesg(state, payload) {
       state.userlist = payload;
-    },
-    pushUser(state, payload) {
-      state.userlist.push(payload);
     }
+    // pushUser(state, payload) {
+    //   state.userlist.push(payload);
+    // }
   },
   actions: {},
   getters: {
