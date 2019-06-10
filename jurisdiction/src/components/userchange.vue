@@ -1,18 +1,24 @@
 <template>
   <div class="userChange">
-    <Drawer title="编辑用户" v-model="closePut" width="500" :mask-closable="false" :styles="styles">
+    <Drawer
+      title="编辑用户"
+      v-model="closePut"
+      width="500"
+      :mask-closable="false"
+      :styles="styles"
+    >
       <Form :model="changeData">
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="用户名" label-position="top">
-              <Input v-model="changeData.name" placeholder="请输入用户名"/>
+              <Input v-model="changeData.name" placeholder="请输入用户名" />
             </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="大学" label-position="top">
-              <Input v-model="changeData.school" placeholder="请输入学校名称"/>
+              <Input v-model="changeData.school" placeholder="请输入学校名称" />
             </FormItem>
           </Col>
           <Col span="12">
@@ -27,12 +33,12 @@
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="邮箱" label-position="top">
-              <Input v-model="changeData.mail" placeholder="请输入邮箱"/>
+              <Input v-model="changeData.mail" placeholder="请输入邮箱" />
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem label="电话" label-position="top">
-              <Input v-model="changeData.phone" placeholder="请输入电话"/>
+              <Input v-model="changeData.phone" placeholder="请输入电话" />
             </FormItem>
           </Col>
         </Row>

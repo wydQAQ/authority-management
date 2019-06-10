@@ -1,7 +1,11 @@
 <template>
   <div class="userguan">
     <Layout>
-      <Header>Header</Header>
+      <Header>
+        <Button @click="openDra" type="success">添加</Button>
+        <Button type="warning" @click="openChangeDra">编辑</Button>
+        <Button @click="del" type="error">删除</Button>
+      </Header>
       <Content>Content</Content>
       <Footer>Footer</Footer>
     </Layout>
@@ -12,11 +16,4 @@
 export default {};
 </script>
 
-<style lang="scss" scoped>
-.userguan {
-  header {
-    border-top-left-radius: 10px;
-    background-color: rgb(241, 8, 8);
-  }
-}
-</style>
+<style lang="scss" scoped></style>

@@ -44,13 +44,7 @@
         </Row>
       </Form>
       <div class="demo-drawer-footer">
-<<<<<<< HEAD
-        <Button style="margin-right: 8px" @click="$emit('addCancle', false)"
-          >取消</Button
-        >
-=======
         <Button style="margin-right: 8px" @click="closeOpen">取消</Button>
->>>>>>> f3a689fc0c6d75823a65a7d4cbe833852c556c5b
         <Button type="primary" @click="postU">添加</Button>
       </div>
     </Drawer>

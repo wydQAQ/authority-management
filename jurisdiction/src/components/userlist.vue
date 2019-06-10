@@ -2,10 +2,6 @@
   <div class="user">
     <div class="user-top">
       <Button @click="openDra" type="success">添加</Button>
-<<<<<<< HEAD
-      <Button type="warning" @click="changeData">编辑</Button>
-      <Button @click="delUser" type="error">删除</Button>
-=======
       <Button type="warning" @click="openChangeDra">编辑</Button>
       <Modal v-model="modal2" width="360">
         <p slot="header" style="color:#f60;text-align:center">
@@ -16,11 +12,17 @@
           <p>是否继续删除？</p>
         </div>
         <div slot="footer">
-          <i-button type="error" size="large" long :loading="modal_loading" @click="delUser">删除</i-button>
+          <i-button
+            type="error"
+            size="large"
+            long
+            :loading="modal_loading"
+            @click="delUser"
+            >删除</i-button
+          >
         </div>
       </Modal>
       <Button @click="del" type="error">删除</Button>
->>>>>>> f3a689fc0c6d75823a65a7d4cbe833852c556c5b
       <div class="search">
         <Input
           v-model="searchVal"
@@ -119,11 +121,6 @@ export default {
     UserChange
   },
   methods: {
-<<<<<<< HEAD
-    //编辑操作
-    changeData() {},
-=======
->>>>>>> f3a689fc0c6d75823a65a7d4cbe833852c556c5b
     //查询操作
     getSearch() {
       server
@@ -188,21 +185,8 @@ export default {
               });
             });
         }
-<<<<<<< HEAD
-      } else {
-        //选中删除
-        server
-          .deluserData({
-            id: this.delRow.id
-          })
-          .then(() => {
-            this.initData();
-          });
-      }
-=======
         this.$Message.success("删除成功");
       }, 2000);
->>>>>>> f3a689fc0c6d75823a65a7d4cbe833852c556c5b
     },
     //拿到当前选中的数据
     getRow(selection, row) {
