@@ -55,8 +55,8 @@
 import eventbus from "../eventbus";
 import server from "../lib/server/index";
 import { mapMutations, mapState } from "vuex";
-import UserAdd from "../components/userguanAdd";
-import UserChange from "../components/userchange";
+import UserAdd from "../components/userlistAdd";
+import UserChange from "../components/userlistchange";
 import "iview/dist/styles/iview.css";
 
 export default {
@@ -292,7 +292,7 @@ export default {
 .search {
   width: 326px;
   height: 40px;
-  margin-left: 830px;
+  margin-left: 785px;
   margin-top: -48px;
   button {
     margin-left: 2px;
