@@ -13,13 +13,26 @@
           <p>是否继续删除？</p>
         </div>
         <div slot="footer">
-          <i-button type="error" size="large" long :loading="modal_loading" @click="delUser">删除</i-button>
+          <i-button
+            type="error"
+            size="large"
+            long
+            :loading="modal_loading"
+            @click="delUser"
+            >删除</i-button
+          >
         </div>
       </Modal>
       <Button @click="del" type="error">删除</Button>
       <div class="search">
-        <Input v-model="searchVal" placeholder="请输入要查询的用户名" style="width: auto"/>
-        <Button @click="getSearch" type="primary" icon="ios-search">查询</Button>
+        <Input
+          v-model="searchVal"
+          placeholder="请输入要查询的用户名"
+          style="width: auto"
+        />
+        <Button @click="getSearch" type="primary" icon="ios-search"
+          >查询</Button
+        >
         <Button @click="closeSearch" type="warning">取消</Button>
       </div>
     </div>
@@ -155,11 +168,11 @@ export default {
               .deluserData({
                 id: this.delArray[i]
               })
-              .then(res => {
+              .then(() => {
                 this.initData();
                 this.delArray = [];
               })
-              .catch(e => {
+              .catch(() => {
                 this.$Notice.error({
                   title: "删除异常"
                 });
@@ -171,10 +184,10 @@ export default {
             .deluserData({
               id: this.delRow.id
             })
-            .then(res => {
+            .then(() => {
               this.initData();
             })
-            .catch(e => {
+            .catch(() => {
               this.$Notice.error({
                 title: "删除异常"
               });
@@ -276,7 +289,7 @@ export default {
   padding-top: 80px;
   width: 95%;
   margin: 0 auto;
-  .pageall{
+  .pageall {
     display: flex;
     justify-content: space-between;
     padding-top: 20px;
@@ -293,7 +306,7 @@ export default {
   }
 }
 .search {
-  width: 326px;
+  width: 335px;
   height: 40px;
   margin-left: 785px;
   margin-top: -48px;
@@ -302,4 +315,3 @@ export default {
   }
 }
 </style>
-

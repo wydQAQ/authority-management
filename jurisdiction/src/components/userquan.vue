@@ -1,7 +1,7 @@
 <template>
   <div class="user">
     <div class="user-top">
-      <Button @click="poModal=true" type="success">添加</Button>
+      <Button @click="poModal = true" type="success">添加</Button>
       <Button type="warning" @click="openPutModal">编辑</Button>
       <Modal v-model="modal2" width="360">
         <p slot="header" style="color:#f60;text-align:center">
@@ -12,19 +12,38 @@
           <p>是否继续删除？</p>
         </div>
         <div slot="footer">
-          <i-button type="error" size="large" long :loading="modal_loading" @click="delUser">删除</i-button>
+          <i-button
+            type="error"
+            size="large"
+            long
+            :loading="modal_loading"
+            @click="delUser"
+            >删除</i-button
+          >
         </div>
       </Modal>
       <Button @click="del" type="error">删除</Button>
       <div class="search">
-        <Input v-model="searchVal" placeholder="请输入要查询的权限名" style="width: auto"/>
-        <Button @click="getSearch" type="primary" icon="ios-search">查询</Button>
+        <Input
+          v-model="searchVal"
+          placeholder="请输入要查询的权限名"
+          style="width: auto"
+        />
+        <Button @click="getSearch" type="primary" icon="ios-search"
+          >查询</Button
+        >
         <Button @click="closeSearch" type="warning">取消</Button>
       </div>
     </div>
     <div class="user-lie">
       <div>
-        <Table @on-select="getRow" border ref="selection" :columns="columns4" :data="nowData"></Table>
+        <Table
+          @on-select="getRow"
+          border
+          ref="selection"
+          :columns="columns4"
+          :data="nowData"
+        ></Table>
         <div class="pageall">
           <Page
             :total="dataCount"
@@ -427,4 +446,3 @@ export default {
   }
 }
 </style>
-

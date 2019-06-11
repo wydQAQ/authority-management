@@ -1,8 +1,15 @@
 <template>
   <div class="userjiao">
-    <Modal ok-text="设置" cancel-text="取消" v-model="userModal" draggable scrollable title="用户身份设置">
+    <Modal
+      ok-text="设置"
+      cancel-text="取消"
+      v-model="userModal"
+      draggable
+      scrollable
+      title="用户身份设置"
+    >
       <RadioGroup v-model="jiaoData">
-        <Radio v-for="(item) in userJiaoData" :label="item"></Radio>
+        <Radio v-for="item in userJiaoData" :label="item"></Radio>
         <!-- <Radio label="爪哇犀牛"></Radio>
         <Radio label="印度黑羚"></Radio>-->
       </RadioGroup>
@@ -37,5 +44,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

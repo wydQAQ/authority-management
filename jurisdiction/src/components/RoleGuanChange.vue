@@ -1,46 +1,37 @@
 <template>
-  <div class="userChange">
+  <div class="roleChange">
     <Drawer
       title="编辑用户"
       v-model="closePut"
-      width="400"
+      width="500"
       :mask-closable="false"
       :styles="styles"
     >
       <Form :model="changeData">
         <Row :gutter="32">
-          <Col span="12">
-            <FormItem label="用户名" label-position="top">
-              <Input v-model="changeData.name" placeholder="请输入用户名" />
+          <Col span="24">
+            <FormItem label="角色名" label-position="top">
+              <Input v-model="changeData.name" placeholder="请输入角色名" />
             </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
-          <Col span="12">
-            <FormItem label="大学" label-position="top">
-              <Input v-model="changeData.school" placeholder="请输入学校名称" />
-            </FormItem>
-          </Col>
-          <!-- <Col span="12">
-            <FormItem label="选择身份" label-position="top">
-              <Select v-model="changeData.isTeacher" placeholder="请选择身份">
-                <Option value="private">教师</Option>
-                <Option value="public">学生</Option>
-              </Select>
-            </FormItem>
-          </Col>-->
-        </Row>
-        <Row :gutter="32">
-          <Col span="12">
-            <FormItem label="邮箱" label-position="top">
-              <Input v-model="changeData.mail" placeholder="请输入邮箱" />
+          <Col span="24">
+            <FormItem label="角色描述" label-position="top">
+              <Input v-model="changeData.des" placeholder="请对角色进行描述" />
             </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
-          <Col span="12">
-            <FormItem label="电话" label-position="top">
-              <Input v-model="changeData.phone" placeholder="请输入电话" />
+          <Col span="24">
+            <FormItem label="提交时间" label-position="top"
+              ><br />
+              <DatePicker
+                v-model="changeData.subon"
+                type="datetime"
+                placeholder="请选择提交日期及时间"
+                style="width: 200px"
+              ></DatePicker>
             </FormItem>
           </Col>
         </Row>
@@ -57,7 +48,7 @@
 import eventbus from "../eventbus";
 import server from "../lib/server/index";
 export default {
-  name: "userChange",
+  name: "roleChange",
   data() {
     return {
       styles: {
@@ -78,24 +69,23 @@ export default {
     putU() {
       this.closePut = false;
       server
-        .putUserData({
+        .putRoleData({
           id: this.changeData.id,
           name: this.changeData.name,
-          school: this.changeData.school,
-          // isTeacher: this.changeData.isTeacher,
-          mail: this.changeData.mail,
-          phone: this.changeData.phone
+          des: this.changeData.des,
+          subon: "2019-05-08 16:54:26",
+          del: this.changeData.del
         })
         .then(() => {
           this.$Notice.success({
             title: "编辑成功"
           });
           this.changeData = {};
-          eventbus.$emit("putUser", true);
+          eventbus.$emit("putRole", true);
         })
         .catch(e => {
           this.$Notice.error({
-            title: "编辑异常 请刷新后重试"
+            title: "编辑异常 请刷新后重试" + e
           });
         });
     }
@@ -103,7 +93,7 @@ export default {
   created() {
     eventbus.$on("selectionData", item => {
       this.changeData = item;
-      eventbus.$on("shitPut", item => {
+      eventbus.$on("openPut", item => {
         this.closePut = item;
       });
     });

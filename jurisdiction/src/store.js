@@ -5,11 +5,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    userlist: []
+    userlist: [],
+    rolelist: []
   },
   mutations: {
     inituserMesg(state, payload) {
       state.userlist = payload;
+    },
+    initRoleData(state, payload) {
+      state.rolelist = payload;
     }
     // pushUser(state, payload) {
     //   state.userlist.push(payload);
