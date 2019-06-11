@@ -38,15 +38,18 @@
 
 <script>
 import { truncate } from "fs";
+import { mapMutations } from "vuex";
+import server from "../lib/server/index";
 export default {
   name: "home",
   data() {
     return {
-      spinShow: false,
+      spinShow: false
     };
   },
   components: {},
   methods: {
+    ...mapMutations(["inituserMesg"]),
     //左侧列表点击局部加载
     closeSpin() {
       this.spinShow = true;
@@ -55,6 +58,11 @@ export default {
       }, 1000);
     }
   },
+  created() {
+    server.getUsers().then(res => {
+      this.inituserMesg(res.data);
+    });
+  }
 };
 </script>
 
