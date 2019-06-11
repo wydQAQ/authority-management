@@ -160,11 +160,11 @@ export default {
               .deluserData({
                 id: this.delArray[i]
               })
-              .then(res => {
+              .then(() => {
                 this.initData();
                 this.delArray = [];
               })
-              .catch(e => {
+              .catch(() => {
                 this.$Notice.error({
                   title: "删除异常"
                 });
@@ -179,7 +179,7 @@ export default {
             .then(() => {
               this.initData();
             })
-            .catch(e => {
+            .catch(() => {
               this.$Notice.error({
                 title: "删除异常"
               });
