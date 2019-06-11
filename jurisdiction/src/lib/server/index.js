@@ -44,6 +44,9 @@ export default {
     return axios.get("/per/role?name_like=" + encodeURIComponent(data.name));
   },
 
+  getUserJiao() {
+    return axios.get("/per/role");
+  },
   //用户权限请求
   getQuanData() {
     return axios.get("/per/permission?del=" + 0);

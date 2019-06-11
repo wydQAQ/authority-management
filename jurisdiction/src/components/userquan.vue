@@ -1,7 +1,7 @@
 <template>
   <div class="user">
     <div class="user-top">
-      <Button @click="postModal" type="success">添加</Button>
+      <Button @click="poModal = true" type="success">添加</Button>
       <Button type="warning" @click="openPutModal">编辑</Button>
       <Modal v-model="modal2" width="360">
         <p slot="header" style="color:#f60;text-align:center">
@@ -38,27 +38,27 @@
     <div class="user-lie">
       <div>
         <Table
-          @on-select-all="delAll"
           @on-select="getRow"
           border
           ref="selection"
           :columns="columns4"
           :data="nowData"
         ></Table>
-        <Page
-          :total="dataCount"
-          :page-size="pageSize"
-          @on-change="changepage"
-          @on-page-size-change="nowPageSize"
-        />
-        <div class="page">
-          <Button @click="handleSelectAll(true)">全选</Button>
-          <Button @click="handleSelectAll(false)">取消全选</Button>
+        <div class="pageall">
+          <Page
+            :total="dataCount"
+            :page-size="pageSize"
+            @on-change="changepage"
+            @on-page-size-change="nowPageSize"
+          />
+          <div class="page">
+            <Button @click="handleSelectAll(true)">全选</Button>
+            <Button @click="handleSelectAll(false)">取消全选</Button>
+          </div>
         </div>
       </div>
     </div>
     <div>
-      <!-- 删除弹出 -->
       <Modal
         title="添加权限"
         ok-text="添加"
@@ -160,11 +160,7 @@ export default {
           key: "subby"
         }
       ],
-      fromTop: {
-        type: "",
-        des: "",
-        status: ""
-      },
+      fromTop: {},
       pageSize: 8, //每页显示多少条
       dataCount: 10, //总条数
       pageCurrent: 1, //当前页
@@ -227,8 +223,9 @@ export default {
     },
 
     clearModal() {
-      this.fromTop = "";
+      this.fromTop = {};
     },
+
     postQuan() {
       //添加操作
       server
@@ -247,15 +244,13 @@ export default {
         .then(() => {
           this.initData();
           this.$Message.success("添加成功");
-          this.fromTop = "";
+          console.log(this.fromTop);
+          this.fromTop = {};
         })
         .catch(e => {
           this.$Message.error("添加异常");
         });
       //   console.log(this.fromTop);
-    },
-    postModal() {
-      this.poModal = true;
     },
     //查询操作
     getSearch() {
@@ -291,34 +286,30 @@ export default {
         this.modal2 = false;
         // 批量删除
         if (this.delArray.length > 0) {
-          for (let k = 0; k < this.userlist.length; k++) {
-            for (let i = 0; i < this.delArray.length; i++) {
-              if (this.delArray[i].subby == this.userlist[k].name) {
-                server
-                  .delQuanData({
-                    id: this.delArray[i].id,
-                    pId: this.delArray[i].pId,
-                    type: this.delArray[i].type,
-                    des: this.delArray[i].des,
-                    status: this.delArray[i].status,
-                    del: 1,
-                    subon: this.delArray[i].subon,
-                    subby: this.userlist[k].id,
-                    code: this.delArray[i].code,
-                    url: this.delArray[i].url
-                  })
-                  .then(res => {
-                    this.initData();
-                    this.delArray = [];
-                  })
-                  .catch(e => {
-                    this.$Notice.error({
-                      title: "删除异常"
-                    });
-                  });
-              }
-            }
+          for (let i = 0; i < this.delArray.length; i++) {
+            server
+              .delQuanData({
+                id: this.delArray[i].id,
+                pId: this.delArray[i].pId,
+                type: this.delArray[i].type,
+                des: this.delArray[i].des,
+                status: this.delArray[i].status,
+                del: 1,
+                subon: this.delArray[i].subon,
+                subby: this.userlist[i].subby,
+                code: this.delArray[i].code,
+                url: this.delArray[i].url
+              })
+              .then(res => {
+                this.delArray = [];
+              })
+              .catch(e => {
+                this.$Notice.error({
+                  title: "删除异常"
+                });
+              });
           }
+          this.initData();
         } else {
           // 选中删除
           for (let i = 0; i < this.userlist.length; i++) {
@@ -356,15 +347,11 @@ export default {
     getRow(selection, row) {
       this.delRow = row;
       this.putRow = row;
-      //   eventbus.$emit("selectionData", row);
-    },
-    //拿到当前全部选中的数据
-    delAll(selection) {
+
       for (let i = 0; i < selection.length; i++) {
         this.delArray.push(selection[i]);
       }
     },
-
     changepage(index) {
       //需要显示开始数据的index,(因为数据是从0开始的，页码是从1开始的，需要-1)
       let _start = (index - 1) * this.pageSize;
@@ -392,7 +379,6 @@ export default {
     initData() {
       this.userquan = [];
       server.getQuanData().then(res => {
-        console.log(res.data);
         for (let i = 0; i < res.data.length; i++) {
           //   this.userquan.push(res.data[i]);
           for (let k = 0; k < this.userlist.length; k++) {
@@ -402,7 +388,6 @@ export default {
             }
           }
         }
-        console.log(this.userquan);
         //初始化分页
         this.dataCount = this.userquan.length;
         this.changepage(this.pageCurrent);
@@ -426,15 +411,10 @@ export default {
   padding-top: 80px;
   width: 95%;
   margin: 0 auto;
-  .ivu-page {
-    position: absolute;
-    right: 32px;
-    bottom: 120px;
-  }
-  .page {
-    position: absolute;
-    left: 32px;
-    bottom: 120px;
+  .pageall {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
   }
 }
 .user-top {
