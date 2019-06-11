@@ -103,7 +103,7 @@ export default {
           key: "isTeacher"
         }
       ],
-      // userlist: [],
+      userlist: [],
       teach: "",
       pageSize: 8, //每页显示多少条
       dataCount: 10, //总条数
@@ -222,7 +222,7 @@ export default {
       this.pageSize = index;
     },
     //展开突变
-    ...mapMutations(["inituserMesg"]),
+    // ...mapMutations(["inituserMesg"]),
     handleSelectAll(status) {
       this.$refs.selection.selectAll(status);
     },
@@ -237,24 +237,24 @@ export default {
     initData() {
       server.getUsers().then(res => {
         // this.inituserMesg(res.data);
-        let userlist = res.data;
-        for (let i = 0; i < userlist.length; i++) {
-          if (userlist[i].isTeacher == true) {
-            userlist[i].isTeacher = "教师";
+        this.userlist = res.data;
+        for (let i = 0; i < this.userlist.length; i++) {
+          if (this.userlist[i].isTeacher == true) {
+            this.userlist[i].isTeacher = "教师";
           } else {
-            userlist[i].isTeacher = "学生";
+            this.userlist[i].isTeacher = "学生";
           }
         }
         //数据存入vuex
-        this.inituserMesg(userlist);
+        // this.inituserMesg(userlist);
         //初始化分页
-        this.dataCount = userlist.length;
+        this.dataCount = this.userlist.length;
         this.changepage(this.pageCurrent);
       });
     }
   },
   computed: {
-    ...mapState(["userlist"])
+    // ...mapState(["userlist"])
   },
   created() {
     //初始化分页
