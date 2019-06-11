@@ -1,6 +1,6 @@
 <template>
   <div class="userguanAdd">
-    <Drawer title="添加用户" v-model="openD" width="500" :mask-closable="false" :styles="styles">
+    <Drawer title="添加用户" v-model="openD"  width="400" :mask-closable="false" :styles="styles">
       <Form :model="formData">
         <Row :gutter="32">
           <Col span="12">
@@ -15,14 +15,6 @@
               <Input v-model="formData.school" placeholder="请输入学校名称"/>
             </FormItem>
           </Col>
-          <Col span="12">
-            <FormItem label="选择身份" label-position="top">
-              <Select v-model="formData.isTeacher" placeholder="请选择身份">
-                <Option value="private">教师</Option>
-                <Option value="public">学生</Option>
-              </Select>
-            </FormItem>
-          </Col>
         </Row>
         <Row :gutter="32">
           <Col span="12">
@@ -30,6 +22,8 @@
               <Input v-model="formData.mail" placeholder="请输入邮箱"/>
             </FormItem>
           </Col>
+        </Row>
+        <Row :gutter="32">
           <Col span="12">
             <FormItem label="电话" label-position="top">
               <Input v-model="formData.phone" placeholder="请输入电话"/>
@@ -63,7 +57,7 @@ export default {
       formData: {
         name: "",
         school: "",
-        isTeacher: "",
+        // isTeacher: "",
         mail: "",
         phone: ""
       },
@@ -79,13 +73,13 @@ export default {
     //添加用户操作
     postU() {
       this.openD = false;
-      let newisTeacher = "";
-      //处理isTeacher属性
-      if (this.formData.isTeacher === "private") {
-        newisTeacher = this.formData.isTeacher = true;
-      } else {
-        newisTeacher = this.formData.isTeacher = false;
-      }
+      // let newisTeacher = "";
+      // //处理isTeacher属性
+      // if (this.formData.isTeacher === "private") {
+      //   newisTeacher = this.formData.isTeacher = true;
+      // } else {
+      //   newisTeacher = this.formData.isTeacher = false;
+      // }
       if (this.formData.name === "") {
         this.$Notice.error({
           title: "请输入正确的用户信息"
@@ -98,8 +92,8 @@ export default {
             name: this.formData.name,
             school: this.formData.school,
             phone: this.formData.phone,
-            mail: this.formData.mail,
-            isTeacher: newisTeacher
+            mail: this.formData.mail
+            // isTeacher: newisTeacher
           })
           .then(res => {
             eventbus.$emit("getUser", true);

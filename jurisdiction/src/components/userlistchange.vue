@@ -1,6 +1,6 @@
 <template>
   <div class="userChange">
-    <Drawer title="编辑用户" v-model="closePut" width="500" :mask-closable="false" :styles="styles">
+    <Drawer title="编辑用户" v-model="closePut" width="400" :mask-closable="false" :styles="styles">
       <Form :model="changeData">
         <Row :gutter="32">
           <Col span="12">
@@ -15,14 +15,14 @@
               <Input v-model="changeData.school" placeholder="请输入学校名称"/>
             </FormItem>
           </Col>
-          <Col span="12">
+          <!-- <Col span="12">
             <FormItem label="选择身份" label-position="top">
               <Select v-model="changeData.isTeacher" placeholder="请选择身份">
                 <Option value="private">教师</Option>
                 <Option value="public">学生</Option>
               </Select>
             </FormItem>
-          </Col>
+          </Col>-->
         </Row>
         <Row :gutter="32">
           <Col span="12">
@@ -30,6 +30,8 @@
               <Input v-model="changeData.mail" placeholder="请输入邮箱"/>
             </FormItem>
           </Col>
+        </Row>
+        <Row :gutter="32">
           <Col span="12">
             <FormItem label="电话" label-position="top">
               <Input v-model="changeData.phone" placeholder="请输入电话"/>
@@ -65,13 +67,7 @@ export default {
   methods: {
     clPut() {
       this.closePut = false;
-      this.changeData = {
-        // name: "",
-        // school: "",
-        // isTeacher: "",
-        // mail: "",
-        // phone: ""
-      };
+      this.changeData = {};
     },
     putU() {
       this.closePut = false;
@@ -80,7 +76,7 @@ export default {
           id: this.changeData.id,
           name: this.changeData.name,
           school: this.changeData.school,
-          isTeacher: this.changeData.isTeacher,
+          // isTeacher: this.changeData.isTeacher,
           mail: this.changeData.mail,
           phone: this.changeData.phone
         })

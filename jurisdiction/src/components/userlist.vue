@@ -3,6 +3,7 @@
     <div class="user-top">
       <Button @click="openDra" type="success">添加</Button>
       <Button type="warning" @click="openChangeDra">编辑</Button>
+      <Button type="primary" @click="userIdentity">用户身份</Button>
       <Modal v-model="modal2" width="360">
         <p slot="header" style="color:#f60;text-align:center">
           <Icon type="information-circled"></Icon>
@@ -32,21 +33,24 @@
           :columns="columns4"
           :data="nowData"
         ></Table>
-        <Page
-          :total="dataCount"
-          :page-size="pageSize"
-          @on-change="changepage"
-          @on-page-size-change="nowPageSize"
-        />
-        <div class="page">
-          <Button @click="handleSelectAll(true)">全选</Button>
-          <Button @click="handleSelectAll(false)">取消全选</Button>
+        <div class="pageall">
+          <Page
+            :total="dataCount"
+            :page-size="pageSize"
+            @on-change="changepage"
+            @on-page-size-change="nowPageSize"
+          />
+          <div class="page">
+            <Button @click="handleSelectAll(true)">全选</Button>
+            <Button @click="handleSelectAll(false)">取消全选</Button>
+          </div>
         </div>
       </div>
     </div>
     <div>
       <UserAdd></UserAdd>
       <UserChange></UserChange>
+      <UserJiao></UserJiao>
     </div>
   </div>
 </template>
@@ -58,6 +62,7 @@ import { mapMutations, mapState } from "vuex";
 import UserAdd from "../components/userlistAdd";
 import UserChange from "../components/userlistchange";
 import "iview/dist/styles/iview.css";
+import UserJiao from "../components/userlistjiao";
 
 export default {
   name: "user",
@@ -86,12 +91,11 @@ export default {
           key: "mail"
         },
         {
-          title: "教师",
-          key: "isTeacher"
+          title: "用户身份",
+          key: ""
         }
       ],
       userlist: [],
-      teach: "",
       pageSize: 8, //每页显示多少条
       dataCount: 10, //总条数
       pageCurrent: 1, //当前页
@@ -105,9 +109,13 @@ export default {
   },
   components: {
     UserAdd,
-    UserChange
+    UserChange,
+    UserJiao
   },
   methods: {
+    userIdentity() {
+      eventbus.$emit("openUserJiao", true);
+    },
     //查询操作
     getSearch() {
       server
@@ -225,13 +233,13 @@ export default {
       server.getUsers().then(res => {
         // this.inituserMesg(res.data);
         this.userlist = res.data;
-        for (let i = 0; i < this.userlist.length; i++) {
-          if (this.userlist[i].isTeacher == true) {
-            this.userlist[i].isTeacher = "教师";
-          } else {
-            this.userlist[i].isTeacher = "学生";
-          }
-        }
+        // for (let i = 0; i < this.userlist.length; i++) {
+        //   if (this.userlist[i].isTeacher == true) {
+        //     this.userlist[i].isTeacher = "教师";
+        //   } else {
+        //     this.userlist[i].isTeacher = "学生";
+        //   }
+        // }
         //数据存入vuex
         // this.inituserMesg(userlist);
         //初始化分页
@@ -268,15 +276,10 @@ export default {
   padding-top: 80px;
   width: 95%;
   margin: 0 auto;
-  .ivu-page {
-    position: absolute;
-    right: 32px;
-    bottom: 120px;
-  }
-  .page {
-    position: absolute;
-    left: 32px;
-    bottom: 120px;
+  .pageall{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
   }
 }
 .user-top {

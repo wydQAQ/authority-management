@@ -20,6 +20,10 @@ export default {
   putUserData(data) {
     return axios.put("/per/users/" + data.id, data);
   },
+
+  getUserJiao() {
+    return axios.get("/per/role");
+  },
   //用户权限请求
   getQuanData() {
     return axios.get("/per/permission?del=" + 0);
