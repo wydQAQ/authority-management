@@ -72,6 +72,10 @@ export default {
   getRolePer(params) {
     return axios.get(`/per/role_permission?del=0&roleId=${params.roleId}`);
   },
+  // 获取分页的权限数据
+  getPerPage(params) {
+    return axios.get(`/per/permission?del=0&_limit=12&_page=${params.pageNum}`);
+  },
   // #endregion
 
   // 无过滤获取角色列表
