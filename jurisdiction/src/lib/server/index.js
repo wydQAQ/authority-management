@@ -22,6 +22,18 @@ export default {
   },
   // #endregion
 
+  // #region 用户列表添加身份
+  postListUserShen(data) {
+    return axios.post("/per/user_role", data);
+  },
+  deleteListUserShen(data) {
+    return axios.put("/per/user_role/" + data.id, data);
+  },
+  getListUserShen(params) {
+    return axios.get(`/per/user_role?del=0&userId=${params.userId}`);
+  },
+  // #endregion
+
   // #region 角色列表
 
   // 获取所有未被删除的角色
@@ -68,6 +80,7 @@ export default {
   },
 
   // #region 用户权限请求
+  //用户权限请求
   getQuanData() {
     return axios.get("/per/permission?del=" + 0);
   },

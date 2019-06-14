@@ -1,8 +1,11 @@
 <template>
   <div class="user">
     <div class="user-top">
-      <Button @click="poModal = true" type="success">添加</Button>
-      <Button type="warning" @click="openPutModal">编辑</Button>
+      <div class="button-l">
+        <Button @click="poModal = true" type="success">添加</Button>
+        <Button type="warning" @click="openPutModal">编辑</Button>
+        <Button @click="del" type="error">删除</Button>
+      </div>
       <Modal v-model="modal2" width="360">
         <p slot="header" style="color:#f60;text-align:center">
           <Icon type="information-circled"></Icon>
@@ -22,7 +25,6 @@
           >
         </div>
       </Modal>
-      <Button @click="del" type="error">删除</Button>
       <div class="search">
         <Input
           v-model="searchVal"
@@ -68,7 +70,7 @@
         @on-ok="postQuan"
         @on-cancel="clearModal"
       >
-        <Form :model="fromTop" label-position="left" :label-width="100">
+        <Form :mymodel="fromTop" label-position="left" :label-width="100">
           <FormItem label="权限设置">
             <Input v-model="fromTop.des"></Input>
           </FormItem>
@@ -97,7 +99,7 @@
         @on-ok="putQuan"
         @on-cancel="clearPutModal"
       >
-        <Form :model="delRow" label-position="left" :label-width="100">
+        <Form :mymodel="delRow" label-position="left" :label-width="100">
           <FormItem label="权限设置">
             <Input v-model="delRow.des"></Input>
           </FormItem>
@@ -408,9 +410,6 @@ export default {
 
 <style lang="scss" scoped>
 .user-lie {
-  padding-top: 80px;
-  width: 95%;
-  margin: 0 auto;
   .pageall {
     display: flex;
     justify-content: space-between;
@@ -418,10 +417,13 @@ export default {
   }
 }
 .user-top {
-  height: 50px;
-  line-height: 50px;
-  padding-top: 30px;
+  height: 70px;
+  line-height: 70px;
+  border-top-left-radius: 10px;
   padding-left: 30px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #515a6e;
   button {
     width: 80px;
     margin-left: 10px;
@@ -429,14 +431,11 @@ export default {
 }
 .search {
   width: 335px;
-  height: 40px;
-  margin-left: 785px;
-  margin-top: -48px;
+  height: 50px;
   button {
     margin-left: 2px;
   }
 }
-
 .vertical-center-modal {
   display: flex;
   align-items: center;

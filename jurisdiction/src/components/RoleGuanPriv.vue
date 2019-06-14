@@ -12,7 +12,7 @@
     >
       <div
         class="curRole"
-        style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;"
+        style="border-bottom: 1px solid #e9e9e9;padding-bottom:10px;margin-bottom:6px;"
       >
         当前选择的角色：
         <input readonly :value="roleName" />
@@ -144,10 +144,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.rolePrivilege {
-  // overflow: hidden;
-}
 .curRole {
+  font-size: 16px;
   input {
     border: none;
     outline: none;
@@ -155,7 +153,6 @@ export default {
   }
 }
 .cbAll {
-  // height: 30px;
   padding-top: 10px;
   display: flex;
   justify-content: flex-start;
@@ -165,6 +162,7 @@ export default {
     width: 30%;
     line-height: 30px;
     cursor: pointer;
+    font-size: 12px;
     input {
       width: 14px;
       height: 14px;
