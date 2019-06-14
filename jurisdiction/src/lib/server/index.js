@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default {
-  //用户列表请求
+  // #region 用户列表请求
   login(data) {
     return axios.post("/api/userlogin", data);
   },
@@ -20,8 +20,9 @@ export default {
   putUserData(data) {
     return axios.put("/per/users/" + data.id, data);
   },
+  // #endregion
 
-  // 获取角色列表
+  // #region 角色列表
 
   // 获取所有未被删除的角色
   getRole() {
@@ -44,10 +45,29 @@ export default {
     return axios.get("/per/role?name_like=" + encodeURIComponent(data.name));
   },
 
+  // #endregion
+
+  // #region 角色分配权限
+  // 为角色添加权限
+  postRolePer(data) {
+    return axios.post("/per/role_permission", data);
+  },
+  // 为角色删除权限
+  delRolePer(data) {
+    return axios.put(`/per/role_permission/${data.id}`, data);
+  },
+  // 获取 role_permission 数据
+  getRolePer(params) {
+    return axios.get(`/per/role_permission?del=0&roleId=${params.roleId}`);
+  },
+  // #endregion
+
+  // 无过滤获取角色列表
   getUserJiao() {
     return axios.get("/per/role");
   },
-  //用户权限请求
+
+  // #region 用户权限请求
   getQuanData() {
     return axios.get("/per/permission?del=" + 0);
   },
@@ -63,3 +83,4 @@ export default {
     return axios.post("/per/permission", data);
   }
 };
+// #endregion

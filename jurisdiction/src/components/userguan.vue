@@ -8,6 +8,7 @@
           <Button @click="openDra" type="success">添加</Button>
           <Button type="warning" @click="openChangeDra">编辑</Button>
           <Button @click="del" type="error">删除</Button>
+          <Button type="info" @click="privilege">分配权限</Button>
           <Modal v-model="modal" width="360" @on-cancel="delCancel">
             <p slot="header" style="color:#f60;text-align:center">
               <Icon type="information-circled"></Icon>
@@ -72,7 +73,8 @@
     </Layout>
     <div>
       <RoleAdd></RoleAdd>
-      <RoleChange></RoleChange>
+      <RoleChange @cancelChange="cancelChange"></RoleChange>
+      <RolePriv></RolePriv>
     </div>
   </div>
 </template>
@@ -82,6 +84,7 @@ import eventbus from "../eventbus";
 import server from "../lib/server/index";
 import RoleAdd from "../components/RoleGuanAdd";
 import RoleChange from "../components/RoleGuanChange";
+import RolePriv from "../components/RoleGuanPriv";
 import { mapMutations, mapState } from "vuex";
 
 export default {
@@ -113,12 +116,17 @@ export default {
       nowData: [],
       modal: false,
       modal_loading: false,
+      modal2: false,
       searchVal: "",
       delRow: "", // 选中单条数据
       delArray: [] // 全选
     };
   },
   methods: {
+    // 取消编辑页操作
+    cancelChange() {
+      this.delRow = "";
+    },
     // 点击查询
     getSearch() {
       server.getsearchrole({ name: this.searchVal }).then(res => {
@@ -150,6 +158,7 @@ export default {
     // 点击删除调出对话框
     del() {
       if (this.delRow == "" && this.delArray == "") {
+        this.$Message.warning("请选择角色！");
         return;
       } else {
         this.modal = true;
@@ -195,10 +204,18 @@ export default {
     },
     // 打开编辑页面
     openChangeDra() {
-      eventbus.$emit("openPut", true);
+      if (this.delRow == "") {
+        this.$Message.warning("请选择角色！");
+      } else {
+        eventbus.$emit("openPut", true);
+      }
     },
     // 展开突变
     ...mapMutations(["initRoleData"]),
+    // 打开分配权限对话框
+    privilege() {
+      eventbus.$emit("openModal2", true);
+    },
     // 表格初始化
     initData() {
       server.getRole().then(res => {
@@ -212,7 +229,8 @@ export default {
   },
   components: {
     RoleAdd,
-    RoleChange
+    RoleChange,
+    RolePriv
   },
   computed: mapState(["rolelist"]),
   created() {

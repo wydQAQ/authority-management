@@ -64,7 +64,7 @@ export default {
   methods: {
     clPut() {
       this.closePut = false;
-      this.changeData = {};
+      this.$emit("cancelChange");
     },
     putU() {
       this.closePut = false;

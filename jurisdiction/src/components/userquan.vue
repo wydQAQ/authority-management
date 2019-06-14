@@ -428,7 +428,7 @@ export default {
   }
 }
 .search {
-  width: 326px;
+  width: 335px;
   height: 40px;
   margin-left: 785px;
   margin-top: -48px;
