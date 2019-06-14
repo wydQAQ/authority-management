@@ -14,14 +14,18 @@
         <div class="Username">
           <div class="userJ">
             当前选择用户 :
-            <input v-model="username">
+            <input readonly v-model="username" />
           </div>
           <div class="userBtn"></div>
         </div>
         <CheckboxGroup>
-          <label class="checkbox-wrapper" v-for="item in userList" :key="item.roleId">
-            <input type="checkbox" v-model="item.isChecked">
-            {{item.roleName}}
+          <label
+            class="checkbox-wrapper"
+            v-for="item in userList"
+            :key="item.roleId"
+          >
+            <input type="checkbox" v-model="item.isChecked" />
+            {{ item.roleName }}
           </label>
         </CheckboxGroup>
       </template>
