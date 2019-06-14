@@ -2,6 +2,7 @@
   <div class="rolePrivilege">
     <!-- 分配权限对话框 -->
     <Modal
+      width="700"
       @on-ok="savePriv"
       @on-cancel="cancelPriv"
       ok-text="保存"
@@ -14,8 +15,21 @@
         class="curRole"
         style="border-bottom: 1px solid #e9e9e9;padding-bottom:10px;margin-bottom:6px;"
       >
-        当前选择的角色：
-        <input readonly :value="roleName" />
+        <div class="prompt">
+          当前选择的角色：
+          <input readonly :value="roleName" />
+        </div>
+        <div class="searchPer">
+          <Input
+            v-model="searchPerVal"
+            placeholder="请输入要查询的权限"
+            style="width: auto"
+          />
+          <Button @click="getSearchPer" type="primary" icon="ios-search"
+            >查询</Button
+          >
+          <Button @click="closeSearchPer" type="warning">取消</Button>
+        </div>
       </div>
       <!-- 所有的权限对应的多选框 -->
       <Scroll height="170" :on-reach-edge="handleReachEdge">
@@ -44,11 +58,29 @@ export default {
       oriPerList: [], // 后台的原始权限列表
       roleName: "", // 选中行的角色 name
       roleId: "", // 选中行的角色 id
-      pageNum: 24,
-      maxNumm: ""
+      pageNum: 1,
+      maxNumm: "",
+      searchPerVal: ""
     };
   },
   methods: {
+    // 权限查询
+    getSearchPer() {
+      this.pageNum = 1;
+      this.perList = [];
+      this.oriPerList = [];
+      server
+        .searchPer({ pageNum: this.pageNum, des: this.searchPerVal })
+        .then(res => {
+          this.oriPerList = res.data;
+        });
+      this.initAgainPerList();
+    },
+    // 取消查询
+    closeSearchPer() {
+      this.searchPerVal = "";
+      this.initPerList();
+    },
     // 滚动加载数据
     handleReachEdge(dir) {
       return new Promise(resolve => {
@@ -86,6 +118,7 @@ export default {
     cancelPriv() {
       this.modal2 = false;
       this.pageNum = 1;
+      this.searchPerVal = "";
     },
     // 保存按钮
     savePriv() {
@@ -126,32 +159,34 @@ export default {
         }
       });
     },
+    // 重新渲染 perList
+    initAgainPerList() {
+      server.getRolePer({ roleId: this.roleId }).then(res => {
+        this.oriPerList.forEach(perItem => {
+          let isChecked = false;
+          let id = 0;
+          res.data.forEach(rolePerItem => {
+            if (perItem.id === rolePerItem.permissionId) {
+              isChecked = true;
+              id = rolePerItem.id;
+            }
+          });
+          this.perList.push({
+            id: id,
+            permissionId: perItem.id,
+            permissionDes: perItem.des,
+            isChecked: isChecked,
+            isOriChecked: isChecked
+          });
+        });
+      });
+    },
     // 初始化当前对话框 checkbox 权限列表
     initPerList() {
       // 初始化前清空 checkbox 列表数据
       this.perList = [];
       this.initOriPerList(() => {
-        server
-          .getRolePer({ roleId: this.roleId, pageNum: this.pageNum })
-          .then(res => {
-            this.oriPerList.forEach(perItem => {
-              let isChecked = false;
-              let id = 0;
-              res.data.forEach(rolePerItem => {
-                if (perItem.id === rolePerItem.permissionId) {
-                  isChecked = true;
-                  id = rolePerItem.id;
-                }
-              });
-              this.perList.push({
-                id: id,
-                permissionId: perItem.id,
-                permissionDes: perItem.des,
-                isChecked: isChecked,
-                isOriChecked: isChecked
-              });
-            });
-          });
+        this.initAgainPerList();
       });
     },
     // 初始化后台原始权限列表
@@ -190,10 +225,14 @@ export default {
 <style scoped lang="scss">
 .curRole {
   font-size: 16px;
-  input {
-    border: none;
-    outline: none;
-    color: pink;
+  display: flex;
+  justify-content: space-between;
+  .prompt {
+    input {
+      border: none;
+      outline: none;
+      color: pink;
+    }
   }
 }
 .cbAll {
@@ -203,7 +242,7 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   label {
-    width: 30%;
+    width: 33%;
     line-height: 50px;
     cursor: pointer;
     font-size: 14px;

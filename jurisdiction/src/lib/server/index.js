@@ -76,6 +76,14 @@ export default {
   getPerPage(params) {
     return axios.get(`/per/permission?del=0&_limit=12&_page=${params.pageNum}`);
   },
+  // 分页的权限查询
+  searchPer(params) {
+    return axios.get(
+      `/per/permission?del=0&_limit=12&_page=${
+        params.pageNum
+      }&des_like=${encodeURIComponent(params.des)}`
+    );
+  },
   // #endregion
 
   // 无过滤获取角色列表
