@@ -9,12 +9,18 @@
       draggable
       scrollable
       title="用户权限设置"
+      width="570"
     >
       <template>
         <div class="Username">
           <div class="userJ">
             当前选择用户 :
             <input readonly v-model="userPowername">
+          </div>
+          <div class="powerSearch">
+            <Input v-model="powerData" placeholder="输入关键字查询" clearable style="width: 200px"/>
+            <Icon @click="searchPower" type="md-search"/>
+            <Icon @click="cancelPower" type="ios-sync"/>
           </div>
         </div>
         <Scroll height="200" :on-reach-edge="handleReachEdge">
@@ -41,17 +47,37 @@ export default {
       userPowername: "",
       userPower: [],
       newPowerArr: [],
-      userid: ""
+      userid: "",
+      pageNum: 1,
+      maxNumm: "",
+      powerData: ""
     };
   },
   methods: {
+    searchPower() {
+    },
+    cancelPower() {
+      this.powerData = "";
+    },
     handleReachEdge(dir) {
       return new Promise(resolve => {
         setTimeout(() => {
+          // 往上滑
           if (dir > 0) {
- 
+            if (this.pageNum <= 1) {
+              return this.$Message.warning("已经到第一页辣！憋滑我辣！");
+            } else {
+              this.pageNum--;
+              this.inituserPower();
+            }
+            // 往下滑
           } else {
-
+            if (this.pageNum == this.maxNumm) {
+              this.$Message.warning("已经到最后一页辣！ (ﾟДﾟ*)ﾉ");
+              this.pageNum -= 1;
+            }
+            this.pageNum++;
+            this.inituserPower();
           }
           resolve();
         }, 1000);
@@ -89,7 +115,9 @@ export default {
     },
     initPower(cb) {
       this.newPowerArr = [];
-      server.getQuanData().then(res => {
+      server.getPerPage({ pageNum: this.pageNum }).then(res => {
+        let total = parseInt(res.headers["x-total-count"]);
+        this.maxNumm = Math.ceil(total / 12);
         for (let i = 0; i < res.data.length; i++) {
           this.newPowerArr.push(res.data[i]);
         }
@@ -117,15 +145,21 @@ export default {
 <style lang="scss" scoped>
 .Username {
   width: 100%;
-  height: 75px;
+  height: 40px;
   font-size: 16px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   input {
     border: none;
     outline: none;
     width: 32px;
     color: rgb(219, 72, 14);
+  }
+  i {
+    margin-left: 10px;
+    font-size: 26px;
+    cursor: pointer;
   }
 }
 h3 {
@@ -138,6 +172,9 @@ h3 {
 }
 .checkbox-wrapper {
   width: 148px;
-  line-height: 50px;
+  line-height: 55px;
+}
+.ivu-scroll-wrapper {
+  margin-top: 50px;
 }
 </style>

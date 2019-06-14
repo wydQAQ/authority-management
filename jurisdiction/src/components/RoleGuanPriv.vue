@@ -63,7 +63,7 @@ export default {
               return this.$Message.warning("已经到第一页辣！憋滑我辣！");
             } else {
               this.pageNum--;
-              this.initPerList();
+              this.initPerList(); 
             }
             // 往下滑
           } else {
