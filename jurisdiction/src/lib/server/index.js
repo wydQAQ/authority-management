@@ -20,6 +20,16 @@ export default {
   putUserData(data) {
     return axios.put("/per/users/" + data.id, data);
   },
+  // 用户列表添加身份
+  postListUserShen(data) {
+    return axios.post("/per/user_role", data);
+  },
+  deleteListUserShen(data) {
+    return axios.put("/per/user_role/" + data.id, data);
+  },
+  getListUserShen(params) {
+    return axios.get(`/per/user_role?del=0&userId=${params.userId}`);
+  },
 
   // 获取角色列表
 
@@ -42,10 +52,6 @@ export default {
   // 查询操作
   getsearchrole(data) {
     return axios.get("/per/role?name_like=" + encodeURIComponent(data.name));
-  },
-
-  getUserJiao() {
-    return axios.get("/per/role");
   },
   //用户权限请求
   getQuanData() {

@@ -12,7 +12,9 @@ import {
   Notice,
   Modal,
   Radio,
-  RadioGroup
+  RadioGroup,
+  Checkbox,
+  CheckboxGroup
 } from "iview";
 Vue.use(Form);
 Vue.use(Spin);
@@ -22,6 +24,8 @@ Vue.use(Notice);
 Vue.use(Modal);
 Vue.use(Radio);
 Vue.use(RadioGroup);
+Vue.use(Checkbox);
+Vue.use(CheckboxGroup);
 
 Vue.config.productionTip = false;
 Vue.use(iview);

@@ -6,30 +6,20 @@
         <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
           <div class="from-item">
             <FormItem prop="username">
-              <Input
-                type="text"
-                v-model="formInline.username"
-                placeholder="用户名"
-              >
+              <Input type="text" v-model="formInline.username" placeholder="用户名">
                 <Icon type="ios-person-outline" slot="prepend"></Icon>
               </Input>
             </FormItem>
           </div>
           <div class="from-item">
             <FormItem prop="password">
-              <Input
-                type="password"
-                v-model="formInline.password"
-                placeholder="密码"
-              >
+              <Input type="password" v-model="formInline.password" placeholder="密码">
                 <Icon type="ios-lock-outline" slot="prepend"></Icon>
               </Input>
             </FormItem>
           </div>
           <FormItem class="submit">
-            <Button type="primary" @click="handleSubmit('formInline')"
-              >登录</Button
-            >
+            <Button type="primary" @click="handleSubmit('formInline')">登录</Button>
           </FormItem>
         </Form>
       </div>
@@ -104,9 +94,9 @@ export default {
 <style lang="scss">
 #login {
   .login-menu {
+    background-color: transparent;
     width: 500px;
     height: 400px;
-    background-color: #fff;
     position: absolute;
     top: 50%;
     left: 50%;
