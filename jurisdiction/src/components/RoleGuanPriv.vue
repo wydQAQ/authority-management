@@ -18,12 +18,14 @@
         <input readonly :value="roleName" />
       </div>
       <!-- 所有的权限对应的多选框 -->
-      <div class="cbAll">
-        <label v-for="item in perList" :key="item.permissionId">
-          <input type="checkbox" v-model="item.isChecked" />
-          {{ item.permissionDes }}
-        </label>
-      </div>
+      <Scroll height="170" :on-reach-edge="handleReachEdge">
+        <div class="cbAll">
+          <label v-for="item in perList" :key="item.permissionId">
+            <input type="checkbox" v-model="item.isChecked" />
+            {{ item.permissionDes }}
+          </label>
+        </div>
+      </Scroll>
       <!-- </CheckboxGroup> -->
     </Modal>
   </div>
@@ -41,13 +43,49 @@ export default {
       perList: [], // 重新渲染后的权限列表
       oriPerList: [], // 后台的原始权限列表
       roleName: "", // 选中行的角色 name
-      roleId: "" // 选中行的角色 id
+      roleId: "", // 选中行的角色 id
+      pageNum: 24,
+      maxNumm: ""
     };
   },
   methods: {
+    // 滚动加载数据
+    handleReachEdge(dir) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          // 往上滑
+          if (dir > 0) {
+            // const first = this.list3[0];
+            // for (let i = 1; i < 11; i++) {
+            //   this.list3.unshift(first - i);
+            // }
+            if (this.pageNum <= 1) {
+              return this.$Message.warning("已经到第一页辣！憋滑我辣！");
+            } else {
+              this.pageNum--;
+              this.initPerList();
+            }
+            // 往下滑
+          } else {
+            // const last = this.list3[this.list3.length - 1];
+            // for (let i = 1; i < 11; i++) {
+            //   this.list3.push(last + i);
+            // }
+            if (this.pageNum == this.maxNumm) {
+              this.$Message.warning("已经到最后一页辣！ (ﾟДﾟ*)ﾉ");
+              this.pageNum -= 1;
+            }
+            this.pageNum++;
+            this.initPerList();
+          }
+          resolve();
+        }, 1000);
+      });
+    },
     // 取消按钮
     cancelPriv() {
       this.modal2 = false;
+      this.pageNum = 1;
     },
     // 保存按钮
     savePriv() {
@@ -93,31 +131,37 @@ export default {
       // 初始化前清空 checkbox 列表数据
       this.perList = [];
       this.initOriPerList(() => {
-        server.getRolePer({ roleId: this.roleId }).then(res => {
-          this.oriPerList.forEach(perItem => {
-            let isChecked = false;
-            let id = 0;
-            res.data.forEach(rolePerItem => {
-              if (perItem.id === rolePerItem.permissionId) {
-                isChecked = true;
-                id = rolePerItem.id;
-              }
-            });
-            this.perList.push({
-              id: id,
-              permissionId: perItem.id,
-              permissionDes: perItem.des,
-              isChecked: isChecked,
-              isOriChecked: isChecked
+        server
+          .getRolePer({ roleId: this.roleId, pageNum: this.pageNum })
+          .then(res => {
+            this.oriPerList.forEach(perItem => {
+              let isChecked = false;
+              let id = 0;
+              res.data.forEach(rolePerItem => {
+                if (perItem.id === rolePerItem.permissionId) {
+                  isChecked = true;
+                  id = rolePerItem.id;
+                }
+              });
+              this.perList.push({
+                id: id,
+                permissionId: perItem.id,
+                permissionDes: perItem.des,
+                isChecked: isChecked,
+                isOriChecked: isChecked
+              });
             });
           });
-        });
       });
     },
     // 初始化后台原始权限列表
     initOriPerList(cb) {
       this.oriPerList = [];
-      server.getQuanData().then(res => {
+      server.getPerPage({ pageNum: this.pageNum }).then(res => {
+        // let total = parseInt(xhr.getResponseHeader("x-total-count"));
+        // console.log(total);
+        let total = parseInt(res.headers["x-total-count"]);
+        this.maxNumm = Math.ceil(total / 12);
         res.data.forEach(privItem => {
           this.oriPerList.push(privItem);
         });
@@ -149,7 +193,7 @@ export default {
   input {
     border: none;
     outline: none;
-    color: rgb(219, 72, 14);
+    color: pink;
   }
 }
 .cbAll {
@@ -160,12 +204,12 @@ export default {
   flex-wrap: wrap;
   label {
     width: 30%;
-    line-height: 30px;
+    line-height: 50px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
     input {
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       vertical-align: middle;
       background-color: #fff;
     }
