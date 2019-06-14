@@ -14,15 +14,17 @@
         <div class="Username">
           <div class="userJ">
             当前选择用户 :
-            <input v-model="userPowername">
+            <input readonly v-model="userPowername">
           </div>
         </div>
-        <CheckboxGroup>
-          <label class="checkbox-wrapper" v-for="item in userPower" :key="item.permissionId">
-            <input type="checkbox" v-model="item.isChecked">
-            {{item.permissionName}}
-          </label>
-        </CheckboxGroup>
+        <Scroll height="200" :on-reach-edge="handleReachEdge">
+          <CheckboxGroup>
+            <label class="checkbox-wrapper" v-for="item in userPower" :key="item.permissionId">
+              <input type="checkbox" v-model="item.isChecked">
+              {{item.permissionName}}
+            </label>
+          </CheckboxGroup>
+        </Scroll>
       </template>
     </Modal>
   </div>
@@ -43,6 +45,18 @@ export default {
     };
   },
   methods: {
+    handleReachEdge(dir) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          if (dir > 0) {
+ 
+          } else {
+
+          }
+          resolve();
+        }, 1000);
+      });
+    },
     clearPowerUser() {
       this.userPowername = "";
     },
@@ -111,6 +125,7 @@ export default {
     border: none;
     outline: none;
     width: 32px;
+    color: rgb(219, 72, 14);
   }
 }
 h3 {
@@ -123,6 +138,6 @@ h3 {
 }
 .checkbox-wrapper {
   width: 148px;
-  line-height: 38px;
+  line-height: 50px;
 }
 </style>
