@@ -18,9 +18,9 @@
           </div>
         </div>
         <CheckboxGroup>
-          <label class="checkbox-wrapper" v-for="item in userPower" :key="item.roleId">
+          <label class="checkbox-wrapper" v-for="item in userPower" :key="item.permissionId">
             <input type="checkbox" v-model="item.isChecked">
-            {{item.roleName}}
+            {{item.permissionName}}
           </label>
         </CheckboxGroup>
       </template>
@@ -30,6 +30,7 @@
 
 <script>
 import eventbus from "../eventbus";
+import server from "../lib/server/index";
 export default {
   name: "onePower",
   data() {
@@ -37,7 +38,8 @@ export default {
       powerModal: false,
       userPowername: "",
       userPower: [],
-      newPowerArr:[]
+      newPowerArr: [],
+      userid: ""
     };
   },
   methods: {
@@ -45,53 +47,54 @@ export default {
       this.userPowername = "";
     },
     postPowerUser() {},
-        inituserPower() {
+    inituserPower() {
       this.userPower = [];
-      this.initJiao(() => {
-        server.getListUserShen({ userId: this.userid }).then(res => {
+      this.initPower(() => {
+        server.getPowerData({ userId: this.userid }).then(res => {
           this.newPowerArr.forEach(item => {
             let isChecked = false;
             let id = 0;
             res.data.forEach(userRole => {
-              if (userRole.roleId === item.id) {
+              if (userRole.permissionId === item.id) {
                 this.checkedArr = [];
-                this.checkedArr.push(userRole.roleId);
+                this.checkedArr.push(userRole.permissionId);
                 isChecked = true;
                 id = userRole.id;
               }
             });
             this.userPower.push({
               id: id,
-              roleId: item.id,
-              roleName: item.name,
-              isChecked: isChecked, // 用户是否选中。
+              permissionId: item.id,
+              permissionName: item.des,
+              isChecked: isChecked, // 权限是否选中。
               isOriginChecked: isChecked // 原始的选中状态
             });
           });
         });
       });
     },
-    initJiao(cb) {
+    initPower(cb) {
       this.newPowerArr = [];
-      server.getRole().then(res => {
+      server.getQuanData().then(res => {
         for (let i = 0; i < res.data.length; i++) {
           this.newPowerArr.push(res.data[i]);
         }
         cb();
       });
-    },
+    }
   },
   created() {
     eventbus.$on("openUserPower", item => {
       if (this.userPowername != "") {
         this.powerModal = item;
+        this.inituserPower();
       } else {
         this.$Message.error("请选择要设置权限的用户");
       }
     });
     eventbus.$on("selectionPowerData", item => {
       this.userPowername = item.name;
-      //   this.userid = item.id;
+      this.userid = item.id;
     });
   }
 };
@@ -113,9 +116,13 @@ export default {
 h3 {
   height: 40px;
 }
+.ivu-checkbox-group {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
 .checkbox-wrapper {
-  width: 100px;
-  margin-left: 12px;
-  margin-top: 20px;
+  width: 148px;
+  line-height: 38px;
 }
 </style>

@@ -31,6 +31,10 @@ export default {
     return axios.get(`/per/user_role?del=0&userId=${params.userId}`);
   },
 
+  getPowerData(params) {
+    return axios.get(`/per/user_permission?del=0&userId=${params.userId}`);
+  },
+
   // 获取角色列表
 
   // 获取所有未被删除的角色
