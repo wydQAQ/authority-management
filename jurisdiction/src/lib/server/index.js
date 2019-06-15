@@ -1,4 +1,5 @@
 import axios from "axios";
+axios.defaults.headers.common["Authorization"] = "AUTH_TOKEN";
 
 export default {
   // #region 用户列表请求
@@ -6,19 +7,19 @@ export default {
     return axios.post("/api/userlogin", data);
   },
   getUsers() {
-    return axios.get("/per/users");
+    return axios.get("/api/user");
   },
   postUser(data) {
-    return axios.post("/per/users", data);
+    return axios.post("/api/user", data);
   },
   deluserData(data) {
-    return axios.delete("/per/users/" + data.id);
+    return axios.delete("/api/user/" + data.id);
   },
   getsearchuser(data) {
-    return axios.get("/per/users?name_like=" + encodeURIComponent(data.name));
+    return axios.get("/api/user?name_like=" + encodeURIComponent(data.name));
   },
   putUserData(data) {
-    return axios.put("/per/users/" + data.id, data);
+    return axios.put("/api/user/" + data.id, data);
   },
   // #endregion
 

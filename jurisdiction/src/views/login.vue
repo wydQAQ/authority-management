@@ -13,7 +13,12 @@
           </div>
           <div class="from-item">
             <FormItem prop="password">
-              <Input type="password" @keyup.enter.native="handleSubmit('formInline')" v-model="formInline.password" placeholder="密码">
+              <Input
+                type="password"
+                @keyup.enter.native="handleSubmit('formInline')"
+                v-model="formInline.password"
+                placeholder="密码"
+              >
                 <Icon type="ios-lock-outline" slot="prepend"></Icon>
               </Input>
             </FormItem>
@@ -73,6 +78,9 @@ export default {
             })
             .then(res => {
               if (res.data.code == 1) {
+                console.log(res.data.token);
+                res.headers.token = res.data.token;
+                console.log(res.headers)
                 this.$Spin.show();
                 setTimeout(() => {
                   this.$Spin.hide();
