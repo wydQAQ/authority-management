@@ -55,9 +55,45 @@ export default {
   },
   methods: {
     searchPower() {
+      this.pageNum = 1;
+      this.userPower = [];
+      this.newPowerArr = [];
+      server
+        .searchPer({ pageNum: this.pageNum, des: this.powerData })
+        .then(res => {
+          this.newPowerArr = res.data;
+          if (res.data == "") {
+            this.$Message.error("没有查询到数据");
+          }
+        });
+      this.initAgainPerList();
     },
     cancelPower() {
       this.powerData = "";
+      this.inituserPower();
+    },
+    initAgainPerList() {
+      server.getPowerData({ userId: this.userid }).then(res => {
+        this.newPowerArr.forEach(item => {
+          let isChecked = false;
+          let id = 0;
+          res.data.forEach(userRole => {
+            if (userRole.permissionId === item.id) {
+              this.checkedArr = [];
+              this.checkedArr.push(userRole.permissionId);
+              isChecked = true;
+              id = userRole.id;
+            }
+          });
+          this.userPower.push({
+            id: id,
+            permissionId: item.id,
+            permissionName: item.des,
+            isChecked: isChecked, // 权限是否选中。
+            isOriginChecked: isChecked // 原始的选中状态
+          });
+        });
+      });
     },
     handleReachEdge(dir) {
       return new Promise(resolve => {
@@ -85,32 +121,53 @@ export default {
     },
     clearPowerUser() {
       this.userPowername = "";
+      this.pageNum = 1;
+      this.powerData = "";
     },
-    postPowerUser() {},
+    postPowerUser() {
+      this.userPower.forEach(userPowerItem => {
+        if (userPowerItem.isChecked === userPowerItem.isOriginChecked) {
+          return;
+        }
+        if (userPowerItem.isChecked) {
+          server
+            .postUserPower({
+              id: Date.now() + Math.ceil(Math.random() * 100),
+              userId: this.userid,
+              permissionId: userPowerItem.permissionId,
+              del: 0,
+              subOn: "2019-06-10 09:49:23"
+            })
+            .then(() => {
+              this.$Message.success("权限设置成功！");
+            })
+            .catch(e => {
+              this.$Message.error("权限设置异常！" + e);
+            });
+        } else {
+          server
+            .delUserPower({
+              id: userPowerItem.id,
+              userId: this.userid,
+              permissionId: userPowerItem.permissionId,
+              del: 1,
+              subOn: "2019-06-10 09:49:23"
+            })
+            .then(() => {
+              this.$Message.success("权限移除成功！");
+            })
+            .catch(e => {
+              this.$Message.error("权限移除异常！" + e);
+            });
+        }
+      });
+      console.log(1)
+      console.log(this.userPower)
+    },
     inituserPower() {
       this.userPower = [];
       this.initPower(() => {
-        server.getPowerData({ userId: this.userid }).then(res => {
-          this.newPowerArr.forEach(item => {
-            let isChecked = false;
-            let id = 0;
-            res.data.forEach(userRole => {
-              if (userRole.permissionId === item.id) {
-                this.checkedArr = [];
-                this.checkedArr.push(userRole.permissionId);
-                isChecked = true;
-                id = userRole.id;
-              }
-            });
-            this.userPower.push({
-              id: id,
-              permissionId: item.id,
-              permissionName: item.des,
-              isChecked: isChecked, // 权限是否选中。
-              isOriginChecked: isChecked // 原始的选中状态
-            });
-          });
-        });
+        this.initAgainPerList();
       });
     },
     initPower(cb) {

@@ -13,7 +13,7 @@
           </div>
           <div class="from-item">
             <FormItem prop="password">
-              <Input type="password" v-model="formInline.password" placeholder="密码">
+              <Input type="password" @keyup.enter.native="handleSubmit('formInline')" v-model="formInline.password" placeholder="密码">
                 <Icon type="ios-lock-outline" slot="prepend"></Icon>
               </Input>
             </FormItem>

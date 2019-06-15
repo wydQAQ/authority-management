@@ -69,9 +69,17 @@ export default {
   postRolePer(data) {
     return axios.post("/per/role_permission", data);
   },
+  //为用户添加权限
+  postUserPower(data) {
+    return axios.post("/per/user_permission", data);
+  },
   // 为角色删除权限
   delRolePer(data) {
     return axios.put(`/per/role_permission/${data.id}`, data);
+  },
+  //为用户设置权限
+  delUserPower(data) {
+    return axios.put(`/per/user_permission/${data.id}`, data);
   },
   // 获取 role_permission 数据
   getRolePer(params) {
