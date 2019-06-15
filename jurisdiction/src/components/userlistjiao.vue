@@ -164,6 +164,7 @@ export default {
     border: none;
     outline: none;
     width: 32px;
+    color: rgb(219, 72, 14);
   }
 }
 h3 {

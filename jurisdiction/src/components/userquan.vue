@@ -15,37 +15,18 @@
           <p>是否继续删除？</p>
         </div>
         <div slot="footer">
-          <i-button
-            type="error"
-            size="large"
-            long
-            :loading="modal_loading"
-            @click="delUser"
-            >删除</i-button
-          >
+          <i-button type="error" size="large" long :loading="modal_loading" @click="delUser">删除</i-button>
         </div>
       </Modal>
       <div class="search">
-        <Input
-          v-model="searchVal"
-          placeholder="请输入要查询的权限名"
-          style="width: auto"
-        />
-        <Button @click="getSearch" type="primary" icon="ios-search"
-          >查询</Button
-        >
+        <Input v-model="searchVal" placeholder="请输入要查询的权限名" style="width: auto"/>
+        <Button @click="getSearch" type="primary" icon="ios-search">查询</Button>
         <Button @click="closeSearch" type="warning">取消</Button>
       </div>
     </div>
     <div class="user-lie">
       <div>
-        <Table
-          @on-select="getRow"
-          border
-          ref="selection"
-          :columns="columns4"
-          :data="nowData"
-        ></Table>
+        <Table @on-select="getRow" border ref="selection" :columns="columns4" :data="nowData"></Table>
         <div class="pageall">
           <Page
             :total="dataCount"
@@ -86,6 +67,9 @@
               <Option value="router">router</Option>
             </Select>
           </FormItem>
+          <FormItem label="权限URL">
+            <Input v-model="fromTop.url"></Input>
+          </FormItem>
         </Form>
       </Modal>
 
@@ -114,6 +98,9 @@
               <Option value="menu">menu</Option>
               <Option value="router">router</Option>
             </Select>
+          </FormItem>
+               <FormItem label="权限URL">
+            <Input v-model="delRow.url"></Input>
           </FormItem>
         </Form>
       </Modal>
@@ -241,7 +228,7 @@ export default {
           subon: "2019-05-08 17:07:16",
           subby: 1001,
           code: 1,
-          url: ""
+          url: this.fromTop.url
         })
         .then(() => {
           this.initData();
