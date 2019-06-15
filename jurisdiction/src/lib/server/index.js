@@ -106,6 +106,18 @@ export default {
   },
   postQuanData(data) {
     return axios.post("/per/permission", data);
+  },
+  // #endregion
+
+  // #region 动态获取用户菜单权限
+
+  // 菜单用户权限列表
+  getUserPerMenuUser(params) {
+    return axios.get(`/per/getUserPer/${params.id}?type=menu`);
+  },
+  // 用户路由权限列表
+  getUserPerRouter(params) {
+    return axios.get(`/per/getUserPer/${params.id}?type=router`);
   }
+  // #endregion
 };
-// #endregion
