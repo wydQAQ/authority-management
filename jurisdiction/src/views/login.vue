@@ -6,7 +6,11 @@
         <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
           <div class="from-item">
             <FormItem prop="username">
-              <Input type="text" v-model="formInline.username" placeholder="用户名">
+              <Input
+                type="text"
+                v-model="formInline.username"
+                placeholder="用户名"
+              >
                 <Icon type="ios-person-outline" slot="prepend"></Icon>
               </Input>
             </FormItem>
@@ -24,7 +28,9 @@
             </FormItem>
           </div>
           <FormItem class="submit">
-            <Button type="primary" @click="handleSubmit('formInline')">登录</Button>
+            <Button type="primary" @click="handleSubmit('formInline')"
+              >登录</Button
+            >
           </FormItem>
         </Form>
       </div>
@@ -80,7 +86,7 @@ export default {
               if (res.data.code == 1) {
                 console.log(res.data.token);
                 res.headers.token = res.data.token;
-                console.log(res.headers)
+                console.log(res.headers);
                 this.$Spin.show();
                 setTimeout(() => {
                   this.$Spin.hide();

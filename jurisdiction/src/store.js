@@ -6,14 +6,19 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     userlist: [],
-    rolelist: []
+    rolelist: [],
+    routerPerList: []
   },
   mutations: {
     inituserMesg(state, payload) {
-      state.userlist = payload;
+      state.userlist = [];
+      state.userlist.push(payload);
     },
     initRoleData(state, payload) {
       state.rolelist = payload;
+    },
+    initRouterPer(state, payload) {
+      state.routerPerList.push(payload);
     }
     // pushUser(state, payload) {
     //   state.userlist.push(payload);
