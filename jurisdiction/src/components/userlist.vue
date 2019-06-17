@@ -77,7 +77,7 @@
 <script>
 import eventbus from "../eventbus";
 import server from "../lib/server/index";
-import { mapMutations, mapState } from "vuex";
+import { mapState } from "vuex";
 import UserAdd from "../components/userlistAdd";
 import UserChange from "../components/userlistchange";
 import "iview/dist/styles/iview.css";
