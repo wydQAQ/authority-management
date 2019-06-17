@@ -59,7 +59,9 @@ export default {
   },
   created() {
     server.getUsers().then(res => {
+      console.log(res.data)
       this.inituserMesg(res.data);
+      console.log(this.$store.state.userlist)
     });
   }
 };

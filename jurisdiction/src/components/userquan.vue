@@ -372,6 +372,7 @@ export default {
           //   this.userquan.push(res.data[i]);
           for (let k = 0; k < this.userlist.length; k++) {
             if (this.userlist[k].id == res.data[i].subby) {
+              console.log(this.userlist[k])
               res.data[i].subby = this.userlist[k].name;
               this.userquan.push(res.data[i]);
             }
