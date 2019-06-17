@@ -84,7 +84,7 @@ export default {
             })
             .then(res => {
               if (res.data.code == 1) {
-                this.$store.commit("inituserMesg", res.data.id);
+                this.$store.commit("inituserIdList", res.data.user.id);
                 this.$Spin.show();
                 setTimeout(() => {
                   this.$Spin.hide();

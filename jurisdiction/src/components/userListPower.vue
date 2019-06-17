@@ -15,19 +15,28 @@
         <div class="Username">
           <div class="userJ">
             当前选择用户 :
-            <input readonly v-model="userPowername">
+            <input readonly v-model="userPowername" />
           </div>
           <div class="powerSearch">
-            <Input v-model="powerData" placeholder="输入关键字查询" clearable style="width: 200px"/>
-            <Icon @click="searchPower" type="md-search"/>
-            <Icon @click="cancelPower" type="ios-sync"/>
+            <Input
+              v-model="powerData"
+              placeholder="输入关键字查询"
+              clearable
+              style="width: 200px"
+            />
+            <Icon @click="searchPower" type="md-search" />
+            <Icon @click="cancelPower" type="ios-sync" />
           </div>
         </div>
         <Scroll height="200" :on-reach-edge="handleReachEdge">
           <CheckboxGroup>
-            <label class="checkbox-wrapper" v-for="item in userPower" :key="item.permissionId">
-              <input type="checkbox" v-model="item.isChecked">
-              {{item.permissionName}}
+            <label
+              class="checkbox-wrapper"
+              v-for="item in userPower"
+              :key="item.permissionId"
+            >
+              <input type="checkbox" v-model="item.isChecked" />
+              {{ item.permissionName }}
             </label>
           </CheckboxGroup>
         </Scroll>
@@ -73,14 +82,16 @@ export default {
       this.inituserPower();
     },
     initAgainPerList() {
-      server.getPowerData({ userId: this.userid }).then(res => {
+      server.getUserPerMenuUser({ id: this.userid }).then(res => {
         this.newPowerArr.forEach(item => {
           let isChecked = false;
           let id = 0;
+          console.log(1);
+          console.log(res.data);
           res.data.forEach(userRole => {
-            if (userRole.permissionId === item.id) {
+            if (userRole.id === item.id) {
               this.checkedArr = [];
-              this.checkedArr.push(userRole.permissionId);
+              this.checkedArr.push(userRole.id);
               isChecked = true;
               id = userRole.id;
             }
@@ -161,8 +172,8 @@ export default {
             });
         }
       });
-      console.log(1)
-      console.log(this.userPower)
+      console.log(1);
+      console.log(this.userPower);
     },
     inituserPower() {
       this.userPower = [];
@@ -224,11 +235,11 @@ h3 {
 }
 .ivu-checkbox-group {
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
   flex-wrap: wrap;
 }
 .checkbox-wrapper {
-  width: 148px;
+  width: 33%;
   line-height: 55px;
 }
 .ivu-scroll-wrapper {

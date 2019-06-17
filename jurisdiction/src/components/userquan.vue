@@ -396,6 +396,7 @@ export default {
             }
           }
         }
+
         //初始化分页
         this.dataCount = this.userquan.length;
         this.changepage(this.pageCurrent);

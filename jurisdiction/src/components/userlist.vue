@@ -4,7 +4,9 @@
       <div class="button-l">
         <Button @click="openDra" type="success">添加</Button>
         <Button type="warning" @click="openChangeDra">编辑</Button>
-        <Button type="primary" @click="userIdentity">用户身份</Button>
+        <Button v-if="hasAddRole" type="primary" @click="userIdentity"
+          >用户身份</Button
+        >
         <Button @click="userPower">用户权限</Button>
         <Button @click="del" type="error">删除</Button>
       </div>
@@ -17,12 +19,25 @@
           <p>是否继续删除？</p>
         </div>
         <div slot="footer">
-          <i-button type="error" size="large" long :loading="modal_loading" @click="delUser">删除</i-button>
+          <i-button
+            type="error"
+            size="large"
+            long
+            :loading="modal_loading"
+            @click="delUser"
+            >删除</i-button
+          >
         </div>
       </Modal>
       <div class="search">
-        <Input v-model="searchVal" placeholder="请输入要查询的用户名" style="width: auto"/>
-        <Button @click="getSearch" type="primary" icon="ios-search">查询</Button>
+        <Input
+          v-model="searchVal"
+          placeholder="请输入要查询的用户名"
+          style="width: auto"
+        />
+        <Button @click="getSearch" type="primary" icon="ios-search"
+          >查询</Button
+        >
         <Button @click="closeSearch" type="warning">取消</Button>
       </div>
     </div>
@@ -67,7 +82,7 @@ import UserAdd from "../components/userlistAdd";
 import UserChange from "../components/userlistchange";
 import "iview/dist/styles/iview.css";
 import UserJiao from "../components/userlistjiao";
-import UserPower from "../components/userListPower"
+import UserPower from "../components/userListPower";
 export default {
   name: "user",
   data() {
@@ -99,6 +114,7 @@ export default {
           key: "userJiaoShen"
         }
       ],
+      hasAddRole: false,
       userlist: [],
       pageSize: 8, //每页显示多少条
       dataCount: 10, //总条数
@@ -258,12 +274,26 @@ export default {
     }
   },
   computed: {
-    // ...mapState(["userlist"])
+    ...mapState(["routerPerList"])
   },
   created() {
     //初始化分页
     this.pageCurrent = 1;
     this.initData();
+    console.log(this.routerPerList);
+    this.routerPerList.forEach(item => {
+      if (item == "1560674553317") {
+        this.hasAddRole = true;
+        console.log(this.hasAddRole);
+      }
+    });
+    // server.getUserPerRouter({ id: this.userIdList }).then(res => {
+    //   res.data.forEach(item => {
+    //     if (item.id == "1560592068158") {
+    //       this.hasAddRole = true;
+    //     }
+    //   });
+    // });
     // 子组件发送添加请求 父组件重新初始化
     eventbus.$on("getUser", item => {
       if (item == true) {
