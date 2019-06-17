@@ -16,14 +16,13 @@
         <Collapse simple>
           <Panel name="1">
             用户
-            <p @click="closeSpin" class="acc-item" slot="content">
-              <router-link to="/userlist">用户列表</router-link>
-            </p>
-            <p @click="closeSpin" class="acc-item" slot="content">
-              <router-link to="/userguan">用户管理</router-link>
-            </p>
-            <p @click="closeSpin" class="acc-item" slot="content">
-              <router-link to="/userquan">用户权限</router-link>
+            <p
+              v-for="item in userMenuPer"
+              :key="item.id"
+              class="acc-item"
+              slot="content"
+            >
+              <router-link :to="item.url">{{ item.des }}</router-link>
             </p>
           </Panel>
         </Collapse>
@@ -38,13 +37,18 @@
 
 <script>
 import { mapMutations } from "vuex";
+import { mapState } from "vuex";
 import server from "../lib/server/index";
 export default {
   name: "home",
   data() {
     return {
-      spinShow: false
+      spinShow: false,
+      userMenuPer: []
     };
+  },
+  computed: {
+    ...mapState(["userIdList"])
   },
   components: {},
   methods: {
@@ -55,11 +59,28 @@ export default {
       setTimeout(() => {
         this.spinShow = false;
       }, 1000);
+    },
+    isTypeMenu(item) {
+      return item.type == "menu";
+    },
+    isTypeRouter(item) {
+      return item.type == "router";
     }
   },
   created() {
     server.getUsers().then(res => {
       this.inituserMesg(res.data);
+    });
+    server.getUserPerMenuUser({ id: this.userIdList }).then(res => {
+      let menuArr = res.data.filter(this.isTypeMenu);
+      menuArr.forEach(item => {
+        this.userMenuPer.push(item);
+      });
+      let routerArr = res.data.filter(this.isTypeRouter);
+      routerArr.forEach(item => {
+        console.log(item);
+        this.$store.commit("initRouterPer", item.id);
+      });
     });
   }
 };

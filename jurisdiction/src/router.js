@@ -23,7 +23,7 @@ const router = new Router({
       component: login
     },
 
-    // 路由权限设置
+    // #region 路由权限设置
     // {
     //   path: "/",
     //   name: "loginUser",
@@ -62,6 +62,7 @@ const router = new Router({
     //     }
     //   ]
     // },
+    // #endregion
 
     {
       path: "/second",

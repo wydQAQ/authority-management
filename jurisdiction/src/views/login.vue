@@ -84,9 +84,7 @@ export default {
             })
             .then(res => {
               if (res.data.code == 1) {
-                console.log(res.data.token);
-                res.headers.token = res.data.token;
-                console.log(res.headers);
+                this.$store.commit("inituserIdList", res.data.user.id);
                 this.$Spin.show();
                 setTimeout(() => {
                   this.$Spin.hide();
