@@ -86,8 +86,6 @@ export default {
         this.newPowerArr.forEach(item => {
           let isChecked = false;
           let id = 0;
-          console.log(1);
-          console.log(res.data);
           res.data.forEach(userRole => {
             if (userRole.id === item.id) {
               this.checkedArr = [];
