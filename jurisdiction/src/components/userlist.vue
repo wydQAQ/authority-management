@@ -2,7 +2,7 @@
   <div class="user">
     <div class="user-top">
       <div class="button-l">
-        <Button @click="openDra" type="success">添加</Button>
+        <!-- <Button @click="openDra" type="success">添加</Button> -->
         <Button type="warning" @click="openChangeDra">编辑</Button>
         <Button v-if="hasAddRole" type="primary" @click="userIdentity"
           >用户身份</Button
@@ -220,12 +220,6 @@ export default {
       }
     },
 
-    // //批量选中
-    // getsome(selection) {
-    //   for (let i = 0; i < selection.length; i++) {
-    //     this.delArray.push(selection[i].id);
-    //   }
-    // },
     changepage(index) {
       //需要显示开始数据的index,(因为数据是从0开始的，页码是从1开始的，需要-1)
       let _start = (index - 1) * this.pageSize;
@@ -247,27 +241,16 @@ export default {
       this.$refs.selection.selectAll(status);
     },
     //添加弹出
-    openDra() {
-      eventbus.$emit("shit", true);
-    },
+    // openDra() {
+    //   eventbus.$emit("shit", true);
+    // },
     //编辑弹出
     openChangeDra() {
       eventbus.$emit("shitPut", true);
     },
     initData() {
       server.getUsers().then(res => {
-        // this.inituserMesg(res.data);
         this.userlist = res.data;
-        // for (let i = 0; i < this.userlist.length; i++) {
-        //   if (this.userlist[i].isTeacher == true) {
-        //     this.userlist[i].isTeacher = "教师";
-        //   } else {
-        //     this.userlist[i].isTeacher = "学生";
-        //   }
-        // }
-        //数据存入vuex
-        // this.inituserMesg(userlist);
-        //初始化分页
         this.dataCount = this.userlist.length;
         this.changepage(this.pageCurrent);
       });
@@ -286,14 +269,6 @@ export default {
         this.hasAddRole = true;
       }
     });
-    // server.getUserPerRouter({ id: this.userIdList }).then(res => {
-    //   res.data.forEach(item => {
-    //     if (item.id == "1560592068158") {
-    //       this.hasAddRole = true;
-    //     }
-    //   });
-    // });
-    // 子组件发送添加请求 父组件重新初始化
     eventbus.$on("getUser", item => {
       if (item == true) {
         this.initData();

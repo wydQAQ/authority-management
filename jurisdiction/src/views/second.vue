@@ -3,13 +3,12 @@
     <div class="home-top">
       <h2>权限管理 - - 列表</h2>
       <div class="user">
-        <div class="user-img"></div>
-        <p class="user-name"></p>
+        <Button type="warning" @click="logOut">退出登录</Button>
       </div>
     </div>
     <div class="home-left">
       <div class="logo">
-        <img src="../assets/logo.jpg" alt />
+        <img src="../assets/logo.jpg" alt>
         <span>管理系统</span>
       </div>
       <div class="accodr">
@@ -19,12 +18,7 @@
             <p class="acc-item" slot="content">
               <router-link to="/usermsg">用户消息</router-link>
             </p>
-            <p
-              v-for="item in userMenuPer"
-              :key="item.id"
-              class="acc-item"
-              slot="content"
-            >
+            <p v-for="item in userMenuPer" :key="item.id" class="acc-item" slot="content">
               <router-link :to="item.url">{{ item.des }}</router-link>
             </p>
           </Panel>
@@ -32,7 +26,7 @@
       </div>
     </div>
     <div class="home-right">
-      <router-view />
+      <router-view/>
       <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
   </div>
@@ -68,13 +62,16 @@ export default {
     },
     isTypeRouter(item) {
       return item.type == "router";
+    },
+    logOut() {
+      this.$router.push("/");
     }
   },
   created() {
     server.getUsers().then(res => {
-      console.log(res.data)
+      console.log(res.data);
       this.inituserMesg(res.data);
-      console.log(this.$store.state.userlist)
+      console.log(this.$store.state.userlist);
     });
     server.getUserPerMenuUser({ id: this.userIdList }).then(res => {
       let menuArr = res.data.filter(this.isTypeMenu);
@@ -99,7 +96,11 @@ export default {
     width: 80%;
     height: 60px;
     margin-left: 20%;
+    padding-right: 30px;
     border-bottom-left-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     h2 {
       line-height: 60px;
       margin-left: 2em;
