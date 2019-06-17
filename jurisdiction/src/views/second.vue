@@ -80,6 +80,7 @@ export default {
         this.userMenuPer.push(item);
       });
       let routerArr = res.data.filter(this.isTypeRouter);
+      console.log(routerArr);
       routerArr.forEach(item => {
         console.log(item);
         this.$store.commit("initRouterPer", item.id);

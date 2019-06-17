@@ -125,17 +125,10 @@ export default {
 
   // #region 动态获取用户菜单权限
 
-  // 菜单用户权限列表
+  // 用户已有权限列表
   getUserPerMenuUser(params) {
     return axios.get(`/per/getUserPer/${params.id}`);
   }
-  // 用户路由权限列表
-  // getUserPerRouter(params) {
-  //   return axios.get(`/per/getUserPer/${params.id}?type=router`);
-  // }
-  // #endregion
-
-  // #region 动态获取用户资源权限
 
   // #endregion
 };

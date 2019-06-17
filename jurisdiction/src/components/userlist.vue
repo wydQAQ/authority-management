@@ -280,11 +280,10 @@ export default {
     //初始化分页
     this.pageCurrent = 1;
     this.initData();
-    console.log(this.routerPerList);
     this.routerPerList.forEach(item => {
-      if (item == "1560674553317") {
-        this.hasAddRole = true;
+      if (item == "1560738275460") {
         console.log(this.hasAddRole);
+        this.hasAddRole = true;
       }
     });
     // server.getUserPerRouter({ id: this.userIdList }).then(res => {
