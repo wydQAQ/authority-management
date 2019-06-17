@@ -16,6 +16,9 @@
         <Collapse simple>
           <Panel name="1">
             用户
+            <p class="acc-item" slot="content">
+              <router-link to="/usermsg">用户消息</router-link>
+            </p>
             <p
               v-for="item in userMenuPer"
               :key="item.id"

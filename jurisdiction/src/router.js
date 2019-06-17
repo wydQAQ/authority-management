@@ -2,16 +2,11 @@ import Vue from "vue";
 import Router from "vue-router";
 import second from "./views/second.vue";
 import login from "./views/login";
-
-import loginUser from "./views/loginUser";
-import second2 from "./views/second2";
-import userlist2 from "./components/userlist2";
-import userguan2 from "./components/userguan2";
-
 import userlist from "./components/userlist";
 import userguan from "./components/userguan";
 import userquan from "./components/userquan";
 import store from "./store";
+import usermsg from "./components/usermsg";
 
 Vue.use(Router);
 
@@ -80,6 +75,13 @@ const router = new Router({
         {
           path: "/userquan",
           component: userquan
+        },
+        {
+          path: "/usermsg",
+          component: usermsg,
+          meta: {
+            perId: 1560738275460
+          }
         }
       ]
     },
@@ -96,16 +98,16 @@ const router = new Router({
 });
 
 // 全局前置守卫进行校验
-// router.beforeEach(function(to, from, next) {
-//   if (!to.meta.perId) {
-//     next();
-//   }
-//   store.state.routerPerList.forEach(item => {
-//     if (item == to.meta.perId) {
-//       next();
-//     } else {
-//       next(false);
-//     }
-//   });
-// });
+router.beforeEach(function(to, from, next) {
+  if (!to.meta.perId) {
+    next();
+  }
+  store.state.routerPerList.forEach(item => {
+    if (item == to.meta.perId) {
+      next();
+    } else {
+      next(false);
+    }
+  });
+});
 export default router;
